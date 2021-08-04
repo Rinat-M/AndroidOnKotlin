@@ -17,6 +17,10 @@ class MainActivity : AppCompatActivity() {
         clickMeButton.setOnClickListener {
             infoTextView.text = getString(R.string.button_was_clicked)
         }
+
+        val person = Person("Ivan", "Ivanov")
+        val personTextView = findViewById<TextView>(R.id.person_text_view)
+        personTextView.text = person.toString()
     }
 
 }
