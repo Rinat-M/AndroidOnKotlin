@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Homework01</string>
+    <string name="click_me">Click me</string>
+    <string name="button_was_clicked">Button was clicked!</string>
 </resources>
