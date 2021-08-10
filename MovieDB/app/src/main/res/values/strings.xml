@@ -3,4 +3,6 @@
     <string name="title_home">Home</string>
     <string name="title_favorites">Favorites</string>
     <string name="title_ratings">Ratings</string>
+    <string name="now_playing">Now playing</string>
+    <string name="up_coming">Up coming</string>
 </resources>
