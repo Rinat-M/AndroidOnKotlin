@@ -5,13 +5,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.rino.moviedb.R
 import com.rino.moviedb.databinding.FragmentHomeBinding
 import com.rino.moviedb.entities.AppState
 import com.rino.moviedb.entities.CategoryWithMovies
+import com.rino.moviedb.entities.Movie
 import com.rino.moviedb.entities.MoviesCategory
+import com.rino.moviedb.ui.details.MovieDetailsFragment
 import com.rino.moviedb.ui.home.adapters.CategoryWithMoviesAdapter
+import com.rino.moviedb.ui.home.adapters.MoviesAdapter
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class HomeFragment : Fragment() {
@@ -54,6 +58,18 @@ class HomeFragment : Fragment() {
                 progressBar.visibility = View.GONE
                 categoriesRecyclerview.visibility = View.VISIBLE
 
+                val onItemClickListener = object : MoviesAdapter.OnItemClickListener {
+                    override fun onItemClick(movie: Movie) {
+                        val navController = findNavController()
+
+                        val bundle = Bundle().apply {
+                            putParcelable(MovieDetailsFragment.MOVIE_ARG, movie)
+                        }
+
+                        navController.navigate(R.id.action_navigation_home_to_movie_details, bundle)
+                    }
+                }
+
                 val categoriesWithMovies = listOf(
                     CategoryWithMovies(
                         MoviesCategory.NOW_PLAYING,
@@ -66,7 +82,8 @@ class HomeFragment : Fragment() {
                         appState.upcomingMovies
                     )
                 )
-                categoriesRecyclerview.adapter = CategoryWithMoviesAdapter(categoriesWithMovies)
+                categoriesRecyclerview.adapter =
+                    CategoryWithMoviesAdapter(categoriesWithMovies, onItemClickListener)
 
                 Snackbar.make(mainConstraint, "Success", Snackbar.LENGTH_SHORT).show()
             }

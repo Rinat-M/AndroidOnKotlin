@@ -7,7 +7,8 @@ import com.rino.moviedb.databinding.CategoryItemBinding
 import com.rino.moviedb.entities.CategoryWithMovies
 
 class CategoryWithMoviesAdapter(
-    private val categoriesWithMovies: List<CategoryWithMovies>
+    private val categoriesWithMovies: List<CategoryWithMovies>,
+    private val onItemClickListener: MoviesAdapter.OnItemClickListener
 ) : RecyclerView.Adapter<CategoryWithMoviesAdapter.CategoryWithMovieViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryWithMovieViewHolder {
@@ -23,14 +24,18 @@ class CategoryWithMoviesAdapter(
 
     override fun getItemCount(): Int = categoriesWithMovies.count()
 
-    class CategoryWithMovieViewHolder(
+    inner class CategoryWithMovieViewHolder(
         private val binding: CategoryItemBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(categoryWithMovies: CategoryWithMovies) {
             with(binding) {
                 categoryTitle.text = categoryWithMovies.categoryTitle
-                moviesRecyclerview.adapter = MoviesAdapter(categoryWithMovies.movies, categoryWithMovies.category)
+                moviesRecyclerview.adapter = MoviesAdapter(
+                    categoryWithMovies.movies,
+                    categoryWithMovies.category,
+                    onItemClickListener
+                )
             }
         }
 

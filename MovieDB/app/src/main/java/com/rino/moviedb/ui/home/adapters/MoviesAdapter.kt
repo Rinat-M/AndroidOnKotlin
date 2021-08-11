@@ -12,7 +12,8 @@ import com.rino.moviedb.utils.toString
 
 class MoviesAdapter(
     private val movies: List<Movie>,
-    private val moviesCategory: MoviesCategory
+    private val moviesCategory: MoviesCategory,
+    private val onItemClickListener: OnItemClickListener
 ) : RecyclerView.Adapter<MoviesAdapter.MovieViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder =
@@ -45,7 +46,7 @@ class MoviesAdapter(
         abstract fun bind(movie: Movie)
     }
 
-    class NowPlayingMovieViewHolder(
+    inner class NowPlayingMovieViewHolder(
         private val binding: NowPlayingMovieItemBinding
     ) : MovieViewHolder(binding.root) {
 
@@ -54,12 +55,14 @@ class MoviesAdapter(
                 movieTitle.text = movie.title
                 movieReleaseDate.text = movie.releaseDate.toString("yyyy-MM-dd")
                 moviePopularity.text = movie.popularity.toString()
+
+                movieCard.setOnClickListener { onItemClickListener.onItemClick(movie) }
             }
         }
 
     }
 
-    class UpcomingMovieViewHolder(
+    inner class UpcomingMovieViewHolder(
         private val binding: UpcomingMovieItemBinding
     ) : MovieViewHolder(binding.root) {
 
@@ -67,8 +70,14 @@ class MoviesAdapter(
             with(binding) {
                 movieTitle.text = movie.title
                 movieReleaseDate.text = movie.releaseDate.toString("yyyy-MM-dd")
+
+                movieCard.setOnClickListener { onItemClickListener.onItemClick(movie) }
             }
         }
 
+    }
+
+    interface OnItemClickListener {
+        fun onItemClick(movie: Movie)
     }
 }
