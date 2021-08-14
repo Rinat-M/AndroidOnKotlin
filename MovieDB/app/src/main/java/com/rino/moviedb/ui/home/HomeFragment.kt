@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.google.android.material.snackbar.Snackbar
 import com.rino.moviedb.R
 import com.rino.moviedb.databinding.FragmentHomeBinding
 import com.rino.moviedb.entities.AppState
@@ -16,6 +15,7 @@ import com.rino.moviedb.entities.MoviesCategory
 import com.rino.moviedb.ui.details.MovieDetailsFragment
 import com.rino.moviedb.ui.home.adapters.CategoryWithMoviesAdapter
 import com.rino.moviedb.ui.home.adapters.MoviesAdapter
+import com.rino.moviedb.utils.showSnackBar
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class HomeFragment : Fragment() {
@@ -52,8 +52,10 @@ class HomeFragment : Fragment() {
             is AppState.Loading -> {
                 progressBar.visibility = View.VISIBLE
                 categoriesRecyclerview.visibility = View.GONE
-                Snackbar.make(mainConstraint, "Loading", Snackbar.LENGTH_SHORT).show()
+
+                mainConstraint.showSnackBar(R.string.loading)
             }
+
             is AppState.Success -> {
                 progressBar.visibility = View.GONE
                 categoriesRecyclerview.visibility = View.VISIBLE
@@ -82,18 +84,21 @@ class HomeFragment : Fragment() {
                         appState.upcomingMovies
                     )
                 )
+
                 categoriesRecyclerview.adapter =
                     CategoryWithMoviesAdapter(categoriesWithMovies, onItemClickListener)
 
-                Snackbar.make(mainConstraint, "Success", Snackbar.LENGTH_SHORT).show()
+                mainConstraint.showSnackBar(R.string.success)
             }
+
             is AppState.Error -> {
                 progressBar.visibility = View.GONE
                 categoriesRecyclerview.visibility = View.GONE
-                Snackbar
-                    .make(mainConstraint, "Error", Snackbar.LENGTH_SHORT)
-                    .setAction("Reload") { homeViewModel.fetchData() }
-                    .show()
+
+                mainConstraint.showSnackBar(
+                    R.string.error,
+                    actionStringId = R.string.reload
+                ) { homeViewModel.fetchData() }
             }
         }
     }
