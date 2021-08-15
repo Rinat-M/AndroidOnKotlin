@@ -36,9 +36,8 @@ class MoviesAdapter(
             }
         }
 
-    override fun onBindViewHolder(holderNowPlaying: MovieViewHolder, position: Int) {
+    override fun onBindViewHolder(holderNowPlaying: MovieViewHolder, position: Int) =
         holderNowPlaying.bind(movies[position])
-    }
 
     override fun getItemCount(): Int = movies.count()
 
@@ -50,14 +49,12 @@ class MoviesAdapter(
         private val binding: NowPlayingMovieItemBinding
     ) : MovieViewHolder(binding.root) {
 
-        override fun bind(movie: Movie) {
-            with(binding) {
-                movieTitle.text = movie.title
-                movieReleaseDate.text = movie.releaseDate.toString("yyyy-MM-dd")
-                moviePopularity.text = movie.popularity.toString()
+        override fun bind(movie: Movie) = with(binding) {
+            movieTitle.text = movie.title
+            movieReleaseDate.text = movie.releaseDate.toString("yyyy-MM-dd")
+            moviePopularity.text = movie.popularity.toString()
 
-                movieCard.setOnClickListener { onItemClickListener.onItemClick(movie) }
-            }
+            movieCard.setOnClickListener { onItemClickListener.onItemClick(movie) }
         }
 
     }
@@ -66,13 +63,11 @@ class MoviesAdapter(
         private val binding: UpcomingMovieItemBinding
     ) : MovieViewHolder(binding.root) {
 
-        override fun bind(movie: Movie) {
-            with(binding) {
-                movieTitle.text = movie.title
-                movieReleaseDate.text = movie.releaseDate.toString("yyyy-MM-dd")
+        override fun bind(movie: Movie) = with(binding) {
+            movieTitle.text = movie.title
+            movieReleaseDate.text = movie.releaseDate.toString("yyyy-MM-dd")
 
-                movieCard.setOnClickListener { onItemClickListener.onItemClick(movie) }
-            }
+            movieCard.setOnClickListener { onItemClickListener.onItemClick(movie) }
         }
 
     }

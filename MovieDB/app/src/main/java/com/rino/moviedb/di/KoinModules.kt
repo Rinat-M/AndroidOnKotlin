@@ -11,9 +11,7 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 val appModule = module {
-
     single<DataSource> { DummyDataSourceImpl() }
-
     single<MoviesRepository> { MoviesRepositoryImpl(get()) }
 
     viewModel { HomeViewModel(get()) }
