@@ -11,10 +11,19 @@ android {
         applicationId "com.rino.moviedb"
         minSdk 23
         targetSdk 30
-        versionCode 11
-        versionName "1.2.2"
+        versionCode 12
+        versionName "1.2.3"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes.each {
+        Properties properties = new Properties()
+        properties.load(project.rootProject.file("apikey.properties").newDataInputStream())
+        def apiKey = properties.getProperty("moviedb_api_key", "")
+        it.buildConfigField "String", "MOVIEDB_API_KEY", apiKey
+
+        it.buildConfigField "String", "MOVIEDB_BASE_URL", "https://api.themoviedb.org/"
     }
 
     buildTypes {
@@ -23,13 +32,16 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
     kotlinOptions {
         jvmTarget = '1.8'
     }
+
     buildFeatures {
         viewBinding true
     }
