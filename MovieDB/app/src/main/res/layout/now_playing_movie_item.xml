@@ -29,42 +29,47 @@
             android:id="@+id/movie_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/margin_padding_8dp"
+            android:layout_marginStart="@dimen/margin_padding_8dp"
+            android:layout_marginTop="@dimen/margin_padding_4dp"
+            android:layout_marginEnd="@dimen/margin_padding_8dp"
+            android:layout_marginBottom="@dimen/margin_padding_4dp"
             android:ellipsize="end"
-            android:maxLines="2"
+            android:lines="2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/movie_poster"
-            tools:text="Эмма" />
+            tools:text="The suicide Squad" />
 
         <TextView
             android:id="@+id/movie_release_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/margin_padding_8dp"
+            android:layout_marginStart="@dimen/margin_padding_8dp"
             android:textSize="@dimen/additional_text_size"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/movie_title"
             tools:text="2020-08-02" />
 
         <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/appCompatImageView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin_padding_8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.72"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/movie_title"
             app:srcCompat="@drawable/ic_favorite_border" />
 
         <TextView
             android:id="@+id/movie_popularity"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/margin_padding_8dp"
+            android:layout_marginStart="@dimen/margin_padding_8dp"
+            android:layout_marginBottom="@dimen/margin_padding_4dp"
             android:textSize="@dimen/additional_text_size"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/movie_release_date"
             tools:text="6.9" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

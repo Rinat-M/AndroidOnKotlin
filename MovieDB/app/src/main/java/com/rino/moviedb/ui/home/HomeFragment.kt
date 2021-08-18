@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.rino.moviedb.R
@@ -50,15 +51,15 @@ class HomeFragment : Fragment() {
     private fun processData(appState: AppState) = with(binding) {
         when (appState) {
             is AppState.Loading -> {
-                progressBar.visibility = View.VISIBLE
-                categoriesRecyclerview.visibility = View.GONE
+                progressBar.isVisible = true
+                categoriesRecyclerview.isVisible = false
 
                 mainConstraint.showSnackBar(R.string.loading)
             }
 
             is AppState.Success -> {
-                progressBar.visibility = View.GONE
-                categoriesRecyclerview.visibility = View.VISIBLE
+                progressBar.isVisible = false
+                categoriesRecyclerview.isVisible = true
 
                 val onItemClickListener = object : MoviesAdapter.OnItemClickListener {
                     override fun onItemClick(movie: Movie) {
@@ -92,11 +93,16 @@ class HomeFragment : Fragment() {
             }
 
             is AppState.Error -> {
-                progressBar.visibility = View.GONE
-                categoriesRecyclerview.visibility = View.GONE
+                progressBar.isVisible = false
+                categoriesRecyclerview.isVisible = false
+
+                with(errorMsg) {
+                    isVisible = true
+                    text = appState.error.message
+                }
 
                 mainConstraint.showSnackBar(
-                    R.string.error,
+                    appState.error.message ?: "",
                     actionStringId = R.string.reload
                 ) { homeViewModel.fetchData() }
             }
