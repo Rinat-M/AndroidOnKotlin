@@ -20,6 +20,11 @@ class RemoteDataSourceImpl : DataSource {
 
             return try {
                 urlConnection = url.openConnection() as HttpsURLConnection
+
+                if (urlConnection.responseCode != 200) {
+                    return Result.failure(Exception("Response code: ${urlConnection.responseCode}. Response message: ${urlConnection.responseMessage}"))
+                }
+
                 val lines = urlConnection.getLines()
                 val nowPlayingMoviesDTO = Gson().fromJson(lines, NowPlayingMoviesDTO::class.java)
 
