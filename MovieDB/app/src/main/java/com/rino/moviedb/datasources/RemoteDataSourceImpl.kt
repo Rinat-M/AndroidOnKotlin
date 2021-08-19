@@ -21,7 +21,7 @@ class RemoteDataSourceImpl : DataSource {
             return try {
                 urlConnection = url.openConnection() as HttpsURLConnection
 
-                if (urlConnection.responseCode != 200) {
+                if (urlConnection.responseCode != HttpsURLConnection.HTTP_OK) {
                     return Result.failure(Exception("Response code: ${urlConnection.responseCode}. Response message: ${urlConnection.responseMessage}"))
                 }
 
@@ -52,7 +52,7 @@ class RemoteDataSourceImpl : DataSource {
             return try {
                 urlConnection = url.openConnection() as HttpsURLConnection
 
-                if (urlConnection.responseCode != 200) {
+                if (urlConnection.responseCode != HttpsURLConnection.HTTP_OK) {
                     return Result.failure(Exception("Response code: ${urlConnection.responseCode}. Response message: ${urlConnection.responseMessage}"))
                 }
 
