@@ -4,8 +4,8 @@ import com.rino.moviedb.entities.Movie
 
 interface MoviesRepository {
 
-    fun getNowPlayingMovies(): List<Movie>
+    fun getNowPlayingMovies(): Result<List<Movie>>
 
-    fun getUpcomingMovies(): List<Movie>
+    fun getUpcomingMovies(): Result<List<Movie>>
 
 }
