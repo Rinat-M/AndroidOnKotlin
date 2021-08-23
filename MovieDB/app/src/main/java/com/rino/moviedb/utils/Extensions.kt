@@ -1,6 +1,8 @@
 package com.rino.moviedb.utils
 
+import android.content.Context
 import android.view.View
+import android.widget.Toast
 import androidx.annotation.StringRes
 import com.google.android.material.snackbar.Snackbar
 import java.io.BufferedReader
@@ -65,4 +67,8 @@ fun HttpsURLConnection.getLines(): String {
 
     val bufferedReader = BufferedReader(InputStreamReader(this.inputStream))
     return bufferedReader.getLines()
+}
+
+fun Context.showToast(@StringRes stringId: Int, duration: Int = Toast.LENGTH_SHORT) {
+    Toast.makeText(this, stringId, duration).show()
 }
