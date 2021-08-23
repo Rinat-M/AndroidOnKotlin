@@ -26,7 +26,7 @@ class MainActivity : AppCompatActivity() {
         binding.sendButton.setOnClickListener {
             val intent = Intent().apply {
                 action = ACTION_SEND_MESSAGE
-                putExtra(NAME_MESSAGE, binding.messageEditText.toString())
+                putExtra(NAME_MESSAGE, binding.messageEditText.text.toString())
                 addFlags(FLAG_RECEIVER_INCLUDE_BACKGROUND)
             }
 
