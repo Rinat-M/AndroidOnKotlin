@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">MessageReceiver</string>
+    <string name="broadcast_receiver">Message Broadcast Receiver</string>
+</resources>

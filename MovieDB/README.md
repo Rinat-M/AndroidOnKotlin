@@ -62,3 +62,20 @@
 ![homework05_screecast](images/homework05_screencast_1.gif)
 ![homework05_screecast_if_error](images/homework05_screencast_2.gif)
 
+# Домашнее задание 6.
+1. Подпишитесь на событие изменения связи (CONNECTIVITY_ACTION) и уведомляйте об этом пользователя.
+2. Переведите хотя бы один экран своего приложения на использование связки «сервис + BroadcastReceiver» для получения данных из интернета.
+3. \* Создайте два разных приложения и передавайте между ними данные или создайте привязанный сервис, как это описывается в факультативе.
+
+\* Дополнительное задание
+
+# Получившийся результат.
+
+Что было сделано:
+1. Создал ConnectivityActionBroadcastReceiver, который отслеживает события ConnectivityManager.CONNECTIVITY_ACTION. Зарегистрировал его программно в MainActivity.
+2. Создал новый сервис MovieDownloadService для скачивания информации с сайта, далее через BroadcastReceiver эта информация отображается во фрагменте. Для взаимодействия с новым сервисом создал новый фрагмент HomeWithServiceFragment.
+3. Создал 2 тестовых приложения: BroadcastSender - для отправки сообщений, MessageReceiver - для получения сообщений через BroadcastReceiver.
+
+![homework06_1](images/homework06_1.gif)
+![homework06_2](images/homework06_2.gif)
+![homework06_3](images/homework06_3.gif)

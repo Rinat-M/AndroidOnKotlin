@@ -10,4 +10,6 @@
     <string name="success">Success</string>
     <string name="error">Error</string>
     <string name="reload">Reload</string>
+    <string name="connectivity_action">A change in network connectivity has occurred</string>
+    <string name="downloaded_from_service">Movies are downloaded through the service</string>
 </resources>
