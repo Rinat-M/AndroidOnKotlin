@@ -79,3 +79,25 @@
 ![homework06_1](images/homework06_1.gif)
 ![homework06_2](images/homework06_2.gif)
 ![homework06_3](images/homework06_3.gif)
+
+# Домашнее задание 7.
+1. Используйте Retrofit для получения данных с сервера.
+2. Используйте Glide или Picasso для загрузки изображений.
+3. \* Используйте библиотеку Coil в качестве загрузчика изображений.
+
+\* Дополнительное задание
+
+# Получившийся результат.
+
+Что было сделано:
+1. Создал MovieDbService для описания сервиса для Retrofit.
+2. Создал синглтон NetworkModule, в котором методы по получению OkHttpClient, Retrofit и MovieDbService.
+3. Создал HeadersInterceptor для добавления header-ов, в том числе ключа авторизации.
+4. Прописал в KoinModule создание OkHttpClient, Retrofit и MovieDbService.
+5. Переименовал старый RemoteDataSourceImpl в RemoteDataSourceOldImpl - в нем логика получения данных через HttpsURLConnection.
+6. Создал новый RemoteDataSourceImpl, в котором реализовал получение данных через MovieDbService.
+7. Реализовал загрузку изображений через Coil.
+8. После того, как поэкспериментировал с Coil, переделал загрузку изображений через Glide. В роли placeholder создал CircularProgressDrawable.
+
+![homework07_Coil](images/homework07_Coil.gif)
+![homework07_Glide](images/homework07_Glide.gif)

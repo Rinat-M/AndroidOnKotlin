@@ -32,6 +32,7 @@ class CategoryWithMoviesAdapter(
             with(binding) {
                 categoryTitle.text = categoryWithMovies.categoryTitle
                 moviesRecyclerview.adapter = MoviesAdapter(
+                    itemView.context,
                     categoryWithMovies.movies,
                     categoryWithMovies.category,
                     onItemClickListener
