@@ -4,6 +4,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import coil.load
+import coil.transform.CircleCropTransformation
+import com.rino.moviedb.BuildConfig
+import com.rino.moviedb.R
 import com.rino.moviedb.databinding.NowPlayingMovieItemBinding
 import com.rino.moviedb.databinding.UpcomingMovieItemBinding
 import com.rino.moviedb.entities.Movie
@@ -54,6 +58,12 @@ class MoviesAdapter(
             movieReleaseDate.text = movie.releaseDate.toString("yyyy-MM-dd")
             moviePopularity.text = movie.popularity.toString()
 
+            moviePoster.load("${BuildConfig.IMAGE_TMDB_BASE_URL}${BuildConfig.IMAGE_TMDB_RELATIVE_PATH}${movie.posterPath}") {
+                crossfade(true)
+                placeholder(R.drawable.ic_image)
+                transformations(CircleCropTransformation())
+            }
+
             movieCard.setOnClickListener { onItemClickListener.onItemClick(movie) }
         }
 
@@ -66,6 +76,11 @@ class MoviesAdapter(
         override fun bind(movie: Movie) = with(binding) {
             movieTitle.text = movie.title
             movieReleaseDate.text = movie.releaseDate.toString("yyyy-MM-dd")
+
+            moviePoster.load("${BuildConfig.IMAGE_TMDB_BASE_URL}${BuildConfig.IMAGE_TMDB_RELATIVE_PATH}${movie.posterPath}") {
+                crossfade(true)
+                placeholder(R.drawable.ic_image)
+            }
 
             movieCard.setOnClickListener { onItemClickListener.onItemClick(movie) }
         }
