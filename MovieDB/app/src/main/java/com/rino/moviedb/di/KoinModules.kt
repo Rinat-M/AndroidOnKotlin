@@ -11,8 +11,12 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 val appModule = module {
-    single<DataSource> { RemoteDataSourceImpl() }
+    single<DataSource> { RemoteDataSourceImpl(get()) }
     single<MoviesRepository> { MoviesRepositoryImpl(get()) }
+
+    single { NetworkModule.getOkHttpClient() }
+    single { NetworkModule.getRetrofit(get()) }
+    single { NetworkModule.getMovieDbService(get()) }
 
     // view models
     viewModel { HomeViewModel(get()) }
