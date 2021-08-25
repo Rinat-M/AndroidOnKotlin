@@ -3,7 +3,7 @@ package com.rino.moviedb.datasources
 import com.google.gson.Gson
 import com.rino.moviedb.BuildConfig
 import com.rino.moviedb.entities.Movie
-import com.rino.moviedb.rest_entites.NowPlayingMoviesDTO
+import com.rino.moviedb.remote.entites.MoviesDTO
 import com.rino.moviedb.utils.getLines
 import java.net.MalformedURLException
 import java.net.URL
@@ -26,7 +26,7 @@ class RemoteDataSourceImpl : DataSource {
                 }
 
                 val lines = urlConnection.getLines()
-                val nowPlayingMoviesDTO = Gson().fromJson(lines, NowPlayingMoviesDTO::class.java)
+                val nowPlayingMoviesDTO = Gson().fromJson(lines, MoviesDTO::class.java)
 
                 Result.success(nowPlayingMoviesDTO.results)
             } catch (e: Exception) {
@@ -57,7 +57,7 @@ class RemoteDataSourceImpl : DataSource {
                 }
 
                 val lines = urlConnection.getLines()
-                val nowPlayingMoviesDTO = Gson().fromJson(lines, NowPlayingMoviesDTO::class.java)
+                val nowPlayingMoviesDTO = Gson().fromJson(lines, MoviesDTO::class.java)
 
                 Result.success(nowPlayingMoviesDTO.results)
             } catch (e: Exception) {
