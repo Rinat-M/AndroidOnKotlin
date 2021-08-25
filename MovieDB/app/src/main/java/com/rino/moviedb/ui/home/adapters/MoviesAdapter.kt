@@ -1,13 +1,13 @@
 package com.rino.moviedb.ui.home.adapters
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import coil.load
-import coil.transform.CircleCropTransformation
+import androidx.swiperefreshlayout.widget.CircularProgressDrawable
+import com.bumptech.glide.Glide
 import com.rino.moviedb.BuildConfig
-import com.rino.moviedb.R
 import com.rino.moviedb.databinding.NowPlayingMovieItemBinding
 import com.rino.moviedb.databinding.UpcomingMovieItemBinding
 import com.rino.moviedb.entities.Movie
@@ -15,10 +15,19 @@ import com.rino.moviedb.entities.MoviesCategory
 import com.rino.moviedb.utils.toString
 
 class MoviesAdapter(
+    context: Context,
     private val movies: List<Movie>,
     private val moviesCategory: MoviesCategory,
     private val onItemClickListener: OnItemClickListener
 ) : RecyclerView.Adapter<MoviesAdapter.MovieViewHolder>() {
+
+    private val circularProgressDrawable by lazy {
+        CircularProgressDrawable(context).apply {
+            strokeWidth = 5f
+            centerRadius = 30f
+            start()
+        }
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder =
         when (moviesCategory) {
@@ -58,11 +67,11 @@ class MoviesAdapter(
             movieReleaseDate.text = movie.releaseDate.toString("yyyy-MM-dd")
             moviePopularity.text = movie.popularity.toString()
 
-            moviePoster.load("${BuildConfig.IMAGE_TMDB_BASE_URL}${BuildConfig.IMAGE_TMDB_RELATIVE_PATH}${movie.posterPath}") {
-                crossfade(true)
-                placeholder(R.drawable.ic_image)
-                transformations(CircleCropTransformation())
-            }
+            Glide.with(moviePoster.context)
+                .load("${BuildConfig.IMAGE_TMDB_BASE_URL}${BuildConfig.IMAGE_TMDB_RELATIVE_PATH}${movie.posterPath}")
+                .centerCrop()
+                .placeholder(circularProgressDrawable)
+                .into(moviePoster)
 
             movieCard.setOnClickListener { onItemClickListener.onItemClick(movie) }
         }
@@ -77,10 +86,11 @@ class MoviesAdapter(
             movieTitle.text = movie.title
             movieReleaseDate.text = movie.releaseDate.toString("yyyy-MM-dd")
 
-            moviePoster.load("${BuildConfig.IMAGE_TMDB_BASE_URL}${BuildConfig.IMAGE_TMDB_RELATIVE_PATH}${movie.posterPath}") {
-                crossfade(true)
-                placeholder(R.drawable.ic_image)
-            }
+            Glide.with(moviePoster.context)
+                .load("${BuildConfig.IMAGE_TMDB_BASE_URL}${BuildConfig.IMAGE_TMDB_RELATIVE_PATH}${movie.posterPath}")
+                .centerCrop()
+                .placeholder(circularProgressDrawable)
+                .into(moviePoster)
 
             movieCard.setOnClickListener { onItemClickListener.onItemClick(movie) }
         }

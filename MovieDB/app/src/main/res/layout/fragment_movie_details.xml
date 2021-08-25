@@ -33,7 +33,7 @@
         android:layout_width="180dp"
         android:layout_height="280dp"
         android:layout_margin="@dimen/margin_padding_16dp"
-        android:background="@color/blue_700"
+        android:background="@color/blue_grey_100"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/movie_title"
         app:srcCompat="@drawable/ic_image" />

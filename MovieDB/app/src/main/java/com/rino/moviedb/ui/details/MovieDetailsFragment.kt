@@ -5,7 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import coil.load
+import androidx.swiperefreshlayout.widget.CircularProgressDrawable
+import com.bumptech.glide.Glide
 import com.rino.moviedb.BuildConfig
 import com.rino.moviedb.R
 import com.rino.moviedb.databinding.FragmentMovieDetailsBinding
@@ -28,6 +29,14 @@ class MovieDetailsFragment : Fragment() {
     private val binding get() = _binding!!
 
     private var movie: Movie? = null
+
+    private val circularProgressDrawable by lazy {
+        CircularProgressDrawable(requireContext()).apply {
+            strokeWidth = 5f
+            centerRadius = 30f
+            start()
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,10 +62,11 @@ class MovieDetailsFragment : Fragment() {
                 movieReleaseDate.text = it.releaseDate.toString("yyyy-MM-dd")
                 movieOverview.text = it.overview
 
-                moviePoster.load("${BuildConfig.IMAGE_TMDB_BASE_URL}${BuildConfig.IMAGE_TMDB_RELATIVE_PATH}${it.posterPath}") {
-                    crossfade(true)
-                    placeholder(R.drawable.ic_image)
-                }
+                Glide.with(requireContext())
+                    .load("${BuildConfig.IMAGE_TMDB_BASE_URL}${BuildConfig.IMAGE_TMDB_RELATIVE_PATH}${it.posterPath}")
+                    .centerCrop()
+                    .placeholder(circularProgressDrawable)
+                    .into(moviePoster)
             }
         }
     }
