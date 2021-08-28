@@ -7,6 +7,7 @@ import com.rino.moviedb.repositories.MoviesRepositoryImpl
 import com.rino.moviedb.ui.favorites.FavoritesViewModel
 import com.rino.moviedb.ui.home.HomeViewModel
 import com.rino.moviedb.ui.ratings.RatingsViewModel
+import com.rino.moviedb.ui.settings.SettingsViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
@@ -22,4 +23,5 @@ val appModule = module {
     viewModel { HomeViewModel(get()) }
     viewModel { FavoritesViewModel() }
     viewModel { RatingsViewModel() }
+    viewModel { SettingsViewModel() }
 }
