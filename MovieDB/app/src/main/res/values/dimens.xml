@@ -8,4 +8,5 @@
     <dimen name="additional_text_size">12sp</dimen>
     <dimen name="margin_padding_4dp">4dp</dimen>
     <dimen name="settings_item_text_size">16sp</dimen>
+    <dimen name="note_title_size">16sp</dimen>
 </resources>

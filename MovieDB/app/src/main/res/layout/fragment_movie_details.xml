@@ -1,72 +1,108 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.details.MovieDetailsFragment">
 
-    <TextView
-        android:id="@+id/movie_title"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/margin_padding_16dp"
-        android:textColor="@color/black"
-        android:textSize="@dimen/group_title_size"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@id/movie_favorite"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="Эмма" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/movie_favorite"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/margin_padding_16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_favorite_border" />
+        <TextView
+            android:id="@+id/movie_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_padding_16dp"
+            android:textColor="@color/black"
+            android:textSize="@dimen/group_title_size"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@id/movie_favorite"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Эмма" />
 
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/movie_poster"
-        android:layout_width="180dp"
-        android:layout_height="280dp"
-        android:layout_margin="@dimen/margin_padding_16dp"
-        android:background="@color/blue_grey_100"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/movie_title"
-        app:srcCompat="@drawable/ic_image" />
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/movie_favorite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_padding_16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_favorite_border" />
 
-    <TextView
-        android:id="@+id/release_date_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/margin_padding_16dp"
-        android:text="@string/release_date"
-        android:textSize="@dimen/additional_text_size"
-        app:layout_constraintStart_toEndOf="@id/movie_poster"
-        app:layout_constraintTop_toBottomOf="@id/movie_title" />
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/movie_poster"
+            android:layout_width="180dp"
+            android:layout_height="280dp"
+            android:layout_margin="@dimen/margin_padding_16dp"
+            android:background="@color/blue_grey_100"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/movie_title"
+            app:srcCompat="@drawable/ic_image" />
 
-    <TextView
-        android:id="@+id/movie_release_date"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/margin_padding_8dp"
-        android:textSize="@dimen/additional_text_size"
-        app:layout_constraintBaseline_toBaselineOf="@+id/release_date_title"
-        app:layout_constraintStart_toEndOf="@id/release_date_title"
-        tools:text="2018-12-06" />
+        <TextView
+            android:id="@+id/release_date_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_padding_16dp"
+            android:text="@string/release_date"
+            android:textSize="@dimen/additional_text_size"
+            app:layout_constraintStart_toEndOf="@id/movie_poster"
+            app:layout_constraintTop_toBottomOf="@id/movie_title" />
 
-    <TextView
-        android:id="@+id/movie_overview"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_margin="@dimen/margin_padding_16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/movie_poster"
-        tools:text="Описание фильма" />
+        <TextView
+            android:id="@+id/movie_release_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_padding_8dp"
+            android:textSize="@dimen/additional_text_size"
+            app:layout_constraintBaseline_toBaselineOf="@+id/release_date_title"
+            app:layout_constraintStart_toEndOf="@id/release_date_title"
+            tools:text="2018-12-06" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/movie_overview"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_padding_16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/movie_poster"
+            tools:text="Описание фильма" />
+
+        <TextView
+            android:id="@+id/note_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_padding_16dp"
+            android:text="@string/note"
+            android:textColor="@color/black"
+            android:textSize="@dimen/note_title_size"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/movie_overview" />
+
+        <EditText
+            android:id="@+id/movie_note"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_padding_16dp"
+            android:background="@color/grey_100"
+            android:gravity="start"
+            android:hint="@string/movie_note_hint"
+            android:inputType="textMultiLine"
+            android:minLines="2"
+            android:maxLines="10"
+            android:padding="@dimen/margin_padding_8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/note_title"
+            tools:ignore="Autofill" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.core.widget.NestedScrollView>
