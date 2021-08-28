@@ -8,6 +8,7 @@ import com.rino.moviedb.ui.favorites.FavoritesViewModel
 import com.rino.moviedb.ui.home.HomeViewModel
 import com.rino.moviedb.ui.ratings.RatingsViewModel
 import com.rino.moviedb.ui.settings.SettingsViewModel
+import com.rino.moviedb.wrappers.MainSharedPreferencesWrapper
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
@@ -18,10 +19,11 @@ val appModule = module {
     single { NetworkModule.getOkHttpClient() }
     single { NetworkModule.getRetrofit(get()) }
     single { NetworkModule.getMovieDbService(get()) }
+    single { MainSharedPreferencesWrapper(get()) }
 
     // view models
-    viewModel { HomeViewModel(get()) }
+    viewModel { HomeViewModel(get(), get()) }
     viewModel { FavoritesViewModel() }
     viewModel { RatingsViewModel() }
-    viewModel { SettingsViewModel() }
+    viewModel { SettingsViewModel(get()) }
 }

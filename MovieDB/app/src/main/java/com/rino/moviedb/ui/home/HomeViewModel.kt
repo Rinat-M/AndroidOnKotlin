@@ -6,14 +6,18 @@ import androidx.lifecycle.ViewModel
 import com.rino.moviedb.entities.AppState
 import com.rino.moviedb.entities.Movie
 import com.rino.moviedb.repositories.MoviesRepository
-import java.lang.Thread.sleep
+import com.rino.moviedb.wrappers.MainSharedPreferencesWrapper
 
 class HomeViewModel(
-    private val moviesRepository: MoviesRepository
+    private val moviesRepository: MoviesRepository,
+    private val mainPreferences: MainSharedPreferencesWrapper
 ) : ViewModel() {
 
     private val _appState: MutableLiveData<AppState> = MutableLiveData(AppState.Loading)
     val appState: LiveData<AppState> = _appState
+
+    private val isAdultContentEnabled: Boolean
+        get() = mainPreferences.isAdultContentEnabled
 
     fun fetchData() {
         Thread {
@@ -32,6 +36,11 @@ class HomeViewModel(
                     _appState.postValue(AppState.Error(it))
                     return@Thread
                 }
+
+            if (!isAdultContentEnabled) {
+                nowPlayingMovies = nowPlayingMovies.filter { !it.adult }
+                upcomingMovies = upcomingMovies.filter { !it.adult }
+            }
 
             _appState.postValue(AppState.Success(nowPlayingMovies, upcomingMovies))
         }.start()

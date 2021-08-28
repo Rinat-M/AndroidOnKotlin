@@ -5,6 +5,7 @@
     android:layout_height="match_parent">
 
     <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/adult_content_switch"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:fontFamily="@font/russo_one"

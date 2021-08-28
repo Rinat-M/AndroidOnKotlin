@@ -24,4 +24,16 @@ class SettingsFragment : Fragment() {
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        with(binding.adultContentSwitch) {
+            isChecked = settingsViewModel.isAdultContentEnabled
+
+            setOnCheckedChangeListener { _, isChecked ->
+                settingsViewModel.isAdultContentEnabled = isChecked
+            }
+        }
+    }
+
 }
