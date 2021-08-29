@@ -7,11 +7,16 @@ import com.rino.moviedb.entities.AppState
 import com.rino.moviedb.entities.Movie
 import com.rino.moviedb.repositories.MoviesRepository
 import com.rino.moviedb.wrappers.MainSharedPreferencesWrapper
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.launch
 
 class HomeViewModel(
     private val moviesRepository: MoviesRepository,
     private val mainPreferences: MainSharedPreferencesWrapper
 ) : ViewModel() {
+
+    private val uiScope = MainScope()
 
     private val _appState: MutableLiveData<AppState> = MutableLiveData(AppState.Loading)
     val appState: LiveData<AppState> = _appState
@@ -44,6 +49,11 @@ class HomeViewModel(
 
             _appState.postValue(AppState.Success(nowPlayingMovies, upcomingMovies))
         }.start()
+    }
+
+    fun saveToHistory(movie: Movie) = uiScope.launch(Dispatchers.IO) {
+        moviesRepository.saveMovie(movie)
+        moviesRepository.saveMovieToHistory(movie.id)
     }
 
 }

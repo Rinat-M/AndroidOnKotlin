@@ -7,7 +7,7 @@ import java.util.*
 
 @Parcelize
 data class Movie(
-    val id: Int,
+    val id: Long,
     @SerializedName("poster_path")
     val posterPath: String,
     val adult: Boolean,

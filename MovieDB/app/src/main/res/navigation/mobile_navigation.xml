@@ -16,6 +16,9 @@
         <action
             android:id="@+id/action_navigation_home_to_settings"
             app:destination="@id/navigation_settings" />
+        <action
+            android:id="@+id/action_navigation_home_to_history"
+            app:destination="@id/navigation_history" />
     </fragment>
 
     <fragment
@@ -41,5 +44,11 @@
         android:name="com.rino.moviedb.ui.settings.SettingsFragment"
         android:label="Settings"
         tools:layout="@layout/fragment_settings" />
+
+    <fragment
+        android:id="@+id/navigation_history"
+        android:name="com.rino.moviedb.ui.history.HistoryFragment"
+        android:label="History"
+        tools:layout="@layout/fragment_history" />
 
 </navigation>

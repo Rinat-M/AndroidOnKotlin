@@ -14,6 +14,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.navigation.fragment.findNavController
 import com.rino.moviedb.R
 import com.rino.moviedb.databinding.FragmentHomeBinding
+import com.rino.moviedb.databinding.ProgressBarAndErrorMsgBinding
 import com.rino.moviedb.entities.AppState
 import com.rino.moviedb.entities.CategoryWithMovies
 import com.rino.moviedb.entities.Movie
@@ -54,13 +55,16 @@ class HomeWithServiceFragment : Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
 
+    private var _includeBinding: ProgressBarAndErrorMsgBinding? = null
+    private val includeBinding get() = _includeBinding!!
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
-
+        _includeBinding = ProgressBarAndErrorMsgBinding.bind(binding.root)
         return binding.root
     }
 
@@ -84,14 +88,14 @@ class HomeWithServiceFragment : Fragment() {
     private fun processData(appState: AppState) = with(binding) {
         when (appState) {
             is AppState.Loading -> {
-                progressBar.isVisible = true
+                includeBinding.progressBar.isVisible = true
                 categoriesRecyclerview.isVisible = false
 
                 mainConstraint.showSnackBar(R.string.loading)
             }
 
             is AppState.Success -> {
-                progressBar.isVisible = false
+                includeBinding.progressBar.isVisible = false
                 categoriesRecyclerview.isVisible = true
 
                 val onItemClickListener = object : MoviesAdapter.OnItemClickListener {
@@ -126,10 +130,10 @@ class HomeWithServiceFragment : Fragment() {
             }
 
             is AppState.Error -> {
-                progressBar.isVisible = false
+                includeBinding.progressBar.isVisible = false
                 categoriesRecyclerview.isVisible = false
 
-                with(errorMsg) {
+                with(includeBinding.errorMsg) {
                     isVisible = true
                     text = appState.error.message
                 }

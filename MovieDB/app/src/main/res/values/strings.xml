@@ -16,4 +16,6 @@
     <string name="adult_content">Adult content</string>
     <string name="note">Note</string>
     <string name="movie_note_hint">Here you can leave a note about the movie</string>
+    <string name="history">History</string>
+    <string name="viewing_date">Viewing date:</string>
 </resources>
