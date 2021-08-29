@@ -8,7 +8,8 @@ import com.rino.moviedb.entities.CategoryWithMovies
 
 class CategoryWithMoviesAdapter(
     private val categoriesWithMovies: List<CategoryWithMovies>,
-    private val onItemClickListener: MoviesAdapter.OnItemClickListener
+    private val onItemClickListener: MoviesAdapter.OnItemClickListener,
+    private val onFavoriteClickListener: MoviesAdapter.OnFavoriteClickListener
 ) : RecyclerView.Adapter<CategoryWithMoviesAdapter.CategoryWithMovieViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryWithMovieViewHolder {
@@ -35,7 +36,8 @@ class CategoryWithMoviesAdapter(
                     itemView.context,
                     categoryWithMovies.movies,
                     categoryWithMovies.category,
-                    onItemClickListener
+                    onItemClickListener,
+                    onFavoriteClickListener
                 )
             }
         }

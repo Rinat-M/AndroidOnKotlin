@@ -12,6 +12,7 @@ import com.rino.moviedb.BuildConfig
 import com.rino.moviedb.databinding.FragmentMovieDetailsBinding
 import com.rino.moviedb.databinding.ProgressBarAndErrorMsgBinding
 import com.rino.moviedb.entities.ScreenState
+import com.rino.moviedb.utils.processFavorite
 import com.rino.moviedb.utils.toString
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -94,6 +95,13 @@ class MovieDetailsFragment : Fragment() {
                                 .into(moviePoster)
 
                             movieNote.setText(note?.note)
+
+                            movieFavorite.processFavorite(movieWithNote.isFavorite)
+                            movieFavorite.setOnClickListener {
+                                movieWithNote.isFavorite = !movieWithNote.isFavorite
+                                movieFavorite.processFavorite(movieWithNote.isFavorite)
+                                detailsViewModel.onFavoriteEvent(movieWithNote)
+                            }
                         }
                     }
 

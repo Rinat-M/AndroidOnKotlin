@@ -30,6 +30,31 @@ class HomeFragment : Fragment() {
     private var _includeBinding: ProgressBarAndErrorMsgBinding? = null
     private val includeBinding get() = _includeBinding!!
 
+    private val onItemClickListener by lazy {
+        object : MoviesAdapter.OnItemClickListener {
+            override fun onItemClick(movie: Movie) {
+                homeViewModel.saveToHistory(movie)
+
+                val bundle = Bundle().apply {
+                    putLong(MovieDetailsFragment.MOVIE_ID_ARG, movie.id)
+                }
+
+                findNavController().navigate(
+                    R.id.action_navigation_home_to_movie_details,
+                    bundle
+                )
+            }
+        }
+    }
+
+    private val onFavoriteClickListener by lazy {
+        object : MoviesAdapter.OnFavoriteClickListener {
+            override fun onFavorite(movie: Movie, isFavorite: Boolean) {
+                homeViewModel.onFavoriteEvent(movie, isFavorite)
+            }
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
@@ -68,21 +93,6 @@ class HomeFragment : Fragment() {
                 includeBinding.progressBar.isVisible = false
                 categoriesRecyclerview.isVisible = true
 
-                val onItemClickListener = object : MoviesAdapter.OnItemClickListener {
-                    override fun onItemClick(movie: Movie) {
-                        homeViewModel.saveToHistory(movie)
-
-                        val bundle = Bundle().apply {
-                            putLong(MovieDetailsFragment.MOVIE_ID_ARG, movie.id)
-                        }
-
-                        findNavController().navigate(
-                            R.id.action_navigation_home_to_movie_details,
-                            bundle
-                        )
-                    }
-                }
-
                 val categoriesWithMovies = listOf(
                     CategoryWithMovies(
                         MoviesCategory.NOW_PLAYING,
@@ -97,7 +107,11 @@ class HomeFragment : Fragment() {
                 )
 
                 categoriesRecyclerview.adapter =
-                    CategoryWithMoviesAdapter(categoriesWithMovies, onItemClickListener)
+                    CategoryWithMoviesAdapter(
+                        categoriesWithMovies,
+                        onItemClickListener,
+                        onFavoriteClickListener
+                    )
 
                 mainConstraint.showSnackBar(R.string.success)
             }

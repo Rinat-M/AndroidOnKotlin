@@ -25,7 +25,11 @@
         android:id="@+id/navigation_favorites"
         android:name="com.rino.moviedb.ui.favorites.FavoritesFragment"
         android:label="@string/title_favorites"
-        tools:layout="@layout/fragment_favorites" />
+        tools:layout="@layout/fragment_favorites">
+        <action
+            android:id="@+id/action_navigation_favorite_to_movie_details"
+            app:destination="@id/movie_details" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_ratings"

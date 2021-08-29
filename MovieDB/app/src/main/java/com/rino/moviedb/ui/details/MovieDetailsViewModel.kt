@@ -3,6 +3,7 @@ package com.rino.moviedb.ui.details
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.rino.moviedb.database.entites.Favorite
 import com.rino.moviedb.database.entites.MovieWithNote
 import com.rino.moviedb.database.entites.Note
 import com.rino.moviedb.entities.ScreenState
@@ -32,6 +33,16 @@ class MovieDetailsViewModel(
 
     fun saveNote(movieId: Long, note: String) = uiScope.launch(Dispatchers.IO) {
         moviesRepository.saveNote(Note(movieId, note))
+    }
+
+    fun onFavoriteEvent(movieWithNote: MovieWithNote) {
+        uiScope.launch(Dispatchers.IO) {
+            if (movieWithNote.isFavorite) {
+                moviesRepository.addMovieToFavorite(Favorite(movieId = movieWithNote.id))
+            } else {
+                moviesRepository.removeMovieFromFavorite(movieWithNote.id)
+            }
+        }
     }
 
 }

@@ -34,7 +34,7 @@ val appModule = module {
 
     // view models
     viewModel { HomeViewModel(get(), get()) }
-    viewModel { FavoritesViewModel() }
+    viewModel { FavoritesViewModel(get()) }
     viewModel { RatingsViewModel() }
     viewModel { SettingsViewModel(get()) }
     viewModel { HistoryViewModel(get()) }
