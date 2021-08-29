@@ -49,6 +49,10 @@
         android:id="@+id/navigation_history"
         android:name="com.rino.moviedb.ui.history.HistoryFragment"
         android:label="History"
-        tools:layout="@layout/fragment_history" />
+        tools:layout="@layout/fragment_history">
+        <action
+            android:id="@+id/action_navigation_history_to_movie_details"
+            app:destination="@id/movie_details" />
+    </fragment>
 
 </navigation>

@@ -1,6 +1,8 @@
 package com.rino.moviedb.repositories
 
 import com.rino.moviedb.database.entites.HistoryWithMovie
+import com.rino.moviedb.database.entites.MovieWithNote
+import com.rino.moviedb.database.entites.Note
 import com.rino.moviedb.entities.Movie
 
 interface MoviesRepository {
@@ -14,4 +16,11 @@ interface MoviesRepository {
     fun saveMovieToHistory(movieId: Long)
 
     fun getHistoryWithMovies(): List<HistoryWithMovie>
+
+    fun getMovieById(id: Long): Movie
+
+    fun saveNote(note: Note)
+
+    fun getMovieWithNoteById(id: Long): MovieWithNote
+
 }

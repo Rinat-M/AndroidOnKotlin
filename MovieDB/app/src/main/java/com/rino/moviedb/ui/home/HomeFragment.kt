@@ -73,7 +73,7 @@ class HomeFragment : Fragment() {
                         homeViewModel.saveToHistory(movie)
 
                         val bundle = Bundle().apply {
-                            putParcelable(MovieDetailsFragment.MOVIE_ARG, movie)
+                            putLong(MovieDetailsFragment.MOVIE_ID_ARG, movie.id)
                         }
 
                         findNavController().navigate(

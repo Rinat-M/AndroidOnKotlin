@@ -3,7 +3,8 @@ package com.rino.moviedb.ui.history
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.rino.moviedb.entities.ScreenWithListState
+import com.rino.moviedb.database.entites.HistoryWithMovie
+import com.rino.moviedb.entities.ScreenState
 import com.rino.moviedb.repositories.MoviesRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
@@ -16,14 +17,14 @@ class HistoryViewModel(
 
     private val uiScope = MainScope()
 
-    private val _state: MutableLiveData<ScreenWithListState> =
-        MutableLiveData(ScreenWithListState.Loading)
-    val state: LiveData<ScreenWithListState> = _state
+    private val _state: MutableLiveData<ScreenState<List<HistoryWithMovie>>> =
+        MutableLiveData(ScreenState.Loading)
+    val state: LiveData<ScreenState<List<HistoryWithMovie>>> = _state
 
     init {
         uiScope.launch {
             val items = withContext(Dispatchers.IO) { moviesRepository.getHistoryWithMovies() }
-            _state.value = ScreenWithListState.Success(items)
+            _state.value = ScreenState.Success(items)
         }
     }
 }

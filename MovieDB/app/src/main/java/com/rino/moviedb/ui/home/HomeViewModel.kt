@@ -47,7 +47,12 @@ class HomeViewModel(
                 upcomingMovies = upcomingMovies.filter { !it.adult }
             }
 
-            _appState.postValue(AppState.Success(nowPlayingMovies, upcomingMovies))
+            _appState.postValue(
+                AppState.Success(
+                    nowPlayingMovies.sortedByDescending { it.releaseDate },
+                    upcomingMovies.sortedByDescending { it.releaseDate }
+                )
+            )
         }.start()
     }
 

@@ -3,8 +3,11 @@ package com.rino.moviedb.repositories
 import com.rino.moviedb.database.dao.MovieGetDao
 import com.rino.moviedb.database.dao.MovieSetDao
 import com.rino.moviedb.database.entites.History
+import com.rino.moviedb.database.entites.MovieWithNote
+import com.rino.moviedb.database.entites.Note
 import com.rino.moviedb.datasources.DataSource
 import com.rino.moviedb.entities.Movie
+import com.rino.moviedb.entities.coreModel
 import com.rino.moviedb.entities.dbModel
 
 class MoviesRepositoryImpl(
@@ -25,5 +28,12 @@ class MoviesRepositoryImpl(
     }
 
     override fun getHistoryWithMovies() = movieGetDao.getHistoryWithMovies()
+
+    override fun getMovieById(id: Long): Movie = movieGetDao.getMovieById(id).coreModel
+
+    override fun saveNote(note: Note) = movieSetDao.insertNote(note)
+
+    override fun getMovieWithNoteById(id: Long): MovieWithNote =
+        movieGetDao.getMovieWithNoteById(id)
 
 }

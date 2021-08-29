@@ -13,7 +13,8 @@ import com.rino.moviedb.utils.toString
 
 class HistoryAdapter(
     context: Context,
-    private val items: List<HistoryWithMovie>
+    private val items: List<HistoryWithMovie>,
+    private val onItemClickListener: OnItemClickListener
 ) : RecyclerView.Adapter<HistoryAdapter.HistoryViewHolder>() {
 
     private val circularProgressDrawable by lazy {
@@ -52,9 +53,15 @@ class HistoryAdapter(
                     .centerCrop()
                     .placeholder(circularProgressDrawable)
                     .into(moviePoster)
+
+                rootLayout.setOnClickListener { onItemClickListener.onItemClick(item.movieId) }
             }
         }
 
+    }
+
+    interface OnItemClickListener {
+        fun onItemClick(movieId: Long)
     }
 
 }

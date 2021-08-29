@@ -103,7 +103,7 @@ class HomeWithServiceFragment : Fragment() {
                         val navController = findNavController()
 
                         val bundle = Bundle().apply {
-                            putParcelable(MovieDetailsFragment.MOVIE_ARG, movie)
+                            putLong(MovieDetailsFragment.MOVIE_ID_ARG, movie.id)
                         }
 
                         navController.navigate(R.id.action_navigation_home_to_movie_details, bundle)

@@ -47,9 +47,12 @@
             android:id="@+id/release_date_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/margin_padding_16dp"
+            android:layout_marginStart="@dimen/margin_padding_8dp"
+            android:layout_marginTop="@dimen/margin_padding_16dp"
             android:text="@string/release_date"
-            android:textSize="@dimen/additional_text_size"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size_14sp"
+            android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@id/movie_poster"
             app:layout_constraintTop_toBottomOf="@id/movie_title" />
 
@@ -58,50 +61,91 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin_padding_8dp"
-            android:textSize="@dimen/additional_text_size"
+            android:textSize="@dimen/text_size_14sp"
             app:layout_constraintBaseline_toBaselineOf="@+id/release_date_title"
             app:layout_constraintStart_toEndOf="@id/release_date_title"
             tools:text="2018-12-06" />
 
-        <TextView
-            android:id="@+id/movie_overview"
+        <LinearLayout
+            android:id="@+id/overview_layout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin_padding_16dp"
+            android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/movie_poster"
-            tools:text="Описание фильма" />
+            app:layout_constraintTop_toBottomOf="@id/movie_poster">
 
-        <TextView
-            android:id="@+id/note_title"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/margin_padding_16dp"
-            android:text="@string/note"
-            android:textColor="@color/black"
-            android:textSize="@dimen/note_title_size"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/movie_overview" />
+            <TextView
+                android:id="@+id/overview_title"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingBottom="@dimen/margin_padding_8dp"
+                android:text="@string/overview"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size_16sp"
+                android:textStyle="bold" />
 
-        <EditText
-            android:id="@+id/movie_note"
+            <TextView
+                android:id="@+id/movie_overview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/movie_poster"
+                tools:text="Описание фильма" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/note_layout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin_padding_16dp"
-            android:background="@color/grey_100"
-            android:gravity="start"
-            android:hint="@string/movie_note_hint"
-            android:inputType="textMultiLine"
-            android:minLines="2"
-            android:maxLines="10"
-            android:padding="@dimen/margin_padding_8dp"
+            android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/note_title"
-            tools:ignore="Autofill" />
+            app:layout_constraintTop_toBottomOf="@id/overview_layout">
+
+            <TextView
+                android:id="@+id/note_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/margin_padding_8dp"
+                android:text="@string/note"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size_16sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/movie_overview" />
+
+            <EditText
+                android:id="@+id/movie_note"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/grey_100"
+                android:gravity="start"
+                android:hint="@string/movie_note_hint"
+                android:inputType="textMultiLine"
+                android:maxLines="10"
+                android:minLines="2"
+                android:padding="@dimen/margin_padding_8dp"
+                android:textSize="@dimen/text_size_14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/note_title"
+                tools:ignore="Autofill" />
+
+        </LinearLayout>
+
+        <include layout="@layout/progress_bar_and_error_msg" />
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/visibility_group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:constraint_referenced_ids="movie_poster,movie_release_date,release_date_title,overview_layout,movie_title,movie_favorite,note_layout" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
