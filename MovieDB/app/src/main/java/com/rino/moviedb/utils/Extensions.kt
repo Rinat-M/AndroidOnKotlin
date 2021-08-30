@@ -1,10 +1,14 @@
 package com.rino.moviedb.utils
 
 import android.content.Context
+import android.graphics.PorterDuff
 import android.view.View
 import android.widget.Toast
 import androidx.annotation.StringRes
+import androidx.appcompat.widget.AppCompatImageView
+import androidx.core.content.ContextCompat
 import com.google.android.material.snackbar.Snackbar
+import com.rino.moviedb.R
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.text.SimpleDateFormat
@@ -71,4 +75,15 @@ fun HttpsURLConnection.getLines(): String {
 
 fun Context.showToast(@StringRes stringId: Int, duration: Int = Toast.LENGTH_SHORT) {
     Toast.makeText(this, stringId, duration).show()
+}
+
+fun AppCompatImageView.processFavorite(isFavorite: Boolean) {
+    if (isFavorite) {
+        setColorFilter(
+            ContextCompat.getColor(this.context, R.color.amber_300),
+            PorterDuff.Mode.SRC_IN
+        )
+    } else {
+        clearColorFilter()
+    }
 }

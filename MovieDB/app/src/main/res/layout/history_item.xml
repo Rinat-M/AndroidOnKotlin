@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/margin_padding_16dp">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/movie_poster"
+        android:layout_width="130dp"
+        android:layout_height="190dp"
+        android:background="@color/blue_grey_100"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_image" />
+
+    <TextView
+        android:id="@+id/movie_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_padding_16dp"
+        android:layout_marginEnd="@dimen/margin_padding_16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/movie_poster"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="The suicide Squad" />
+
+    <TextView
+        android:id="@+id/viewing_date_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_padding_16dp"
+        android:text="@string/viewing_date"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/movie_poster"
+        app:layout_constraintTop_toBottomOf="@id/movie_title" />
+
+    <TextView
+        android:id="@+id/viewing_date"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_padding_16dp"
+        android:layout_marginEnd="@dimen/margin_padding_16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/movie_poster"
+        app:layout_constraintTop_toBottomOf="@id/viewing_date_title"
+        tools:text="2021-08-08 22:01:10" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

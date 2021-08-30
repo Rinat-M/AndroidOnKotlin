@@ -1,14 +1,13 @@
 package com.rino.moviedb.ui.home
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.rino.moviedb.R
 import com.rino.moviedb.databinding.FragmentHomeBinding
+import com.rino.moviedb.databinding.ProgressBarAndErrorMsgBinding
 import com.rino.moviedb.entities.AppState
 import com.rino.moviedb.entities.CategoryWithMovies
 import com.rino.moviedb.entities.Movie
@@ -28,13 +27,46 @@ class HomeFragment : Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
 
+    private var _includeBinding: ProgressBarAndErrorMsgBinding? = null
+    private val includeBinding get() = _includeBinding!!
+
+    private val onItemClickListener by lazy {
+        object : MoviesAdapter.OnItemClickListener {
+            override fun onItemClick(movie: Movie) {
+                homeViewModel.saveToHistory(movie)
+
+                val bundle = Bundle().apply {
+                    putLong(MovieDetailsFragment.MOVIE_ID_ARG, movie.id)
+                }
+
+                findNavController().navigate(
+                    R.id.action_navigation_home_to_movie_details,
+                    bundle
+                )
+            }
+        }
+    }
+
+    private val onFavoriteClickListener by lazy {
+        object : MoviesAdapter.OnFavoriteClickListener {
+            override fun onFavorite(movie: Movie, isFavorite: Boolean) {
+                homeViewModel.onFavoriteEvent(movie, isFavorite)
+            }
+        }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
-
+        _includeBinding = ProgressBarAndErrorMsgBinding.bind(binding.root)
         return binding.root
     }
 
@@ -51,27 +83,15 @@ class HomeFragment : Fragment() {
     private fun processData(appState: AppState) = with(binding) {
         when (appState) {
             is AppState.Loading -> {
-                progressBar.isVisible = true
+                includeBinding.progressBar.isVisible = true
                 categoriesRecyclerview.isVisible = false
 
                 mainConstraint.showSnackBar(R.string.loading)
             }
 
             is AppState.Success -> {
-                progressBar.isVisible = false
+                includeBinding.progressBar.isVisible = false
                 categoriesRecyclerview.isVisible = true
-
-                val onItemClickListener = object : MoviesAdapter.OnItemClickListener {
-                    override fun onItemClick(movie: Movie) {
-                        val navController = findNavController()
-
-                        val bundle = Bundle().apply {
-                            putParcelable(MovieDetailsFragment.MOVIE_ARG, movie)
-                        }
-
-                        navController.navigate(R.id.action_navigation_home_to_movie_details, bundle)
-                    }
-                }
 
                 val categoriesWithMovies = listOf(
                     CategoryWithMovies(
@@ -87,16 +107,20 @@ class HomeFragment : Fragment() {
                 )
 
                 categoriesRecyclerview.adapter =
-                    CategoryWithMoviesAdapter(categoriesWithMovies, onItemClickListener)
+                    CategoryWithMoviesAdapter(
+                        categoriesWithMovies,
+                        onItemClickListener,
+                        onFavoriteClickListener
+                    )
 
                 mainConstraint.showSnackBar(R.string.success)
             }
 
             is AppState.Error -> {
-                progressBar.isVisible = false
+                includeBinding.progressBar.isVisible = false
                 categoriesRecyclerview.isVisible = false
 
-                with(errorMsg) {
+                with(includeBinding.errorMsg) {
                     isVisible = true
                     text = appState.error.message
                 }
@@ -107,6 +131,25 @@ class HomeFragment : Fragment() {
                 ) { homeViewModel.fetchData() }
             }
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.home_menu, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean = when (item.itemId) {
+        R.id.settings_menu -> {
+            findNavController().navigate(R.id.action_navigation_home_to_settings)
+            true
+        }
+
+        R.id.history_menu -> {
+            findNavController().navigate(R.id.action_navigation_home_to_history)
+            true
+        }
+
+        else -> super.onOptionsItemSelected(item)
     }
 
     override fun onDestroyView() {

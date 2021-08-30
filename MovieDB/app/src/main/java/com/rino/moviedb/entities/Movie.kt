@@ -7,7 +7,7 @@ import java.util.*
 
 @Parcelize
 data class Movie(
-    val id: Int,
+    val id: Long,
     @SerializedName("poster_path")
     val posterPath: String,
     val adult: Boolean,
@@ -28,5 +28,6 @@ data class Movie(
     val voteCount: Int,
     val video: Boolean,
     @SerializedName("vote_average")
-    val voteAverage: Double
+    val voteAverage: Double,
+    var isFavorite: Boolean? = false
 ) : Parcelable
