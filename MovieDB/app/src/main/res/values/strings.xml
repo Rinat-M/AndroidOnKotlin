@@ -20,4 +20,7 @@
     <string name="viewing_date">Viewing date:</string>
     <string name="overview">Overview</string>
     <string name="search">Search</string>
+    <string name="share">Share</string>
+    <string name="need_permissions_to_read_contacts">You must grant permission to read contacts</string>
+    <string name="need_permissions_to_call">You must grant permission to call</string>
 </resources>

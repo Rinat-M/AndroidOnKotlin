@@ -5,6 +5,7 @@ import com.rino.moviedb.datasources.DataSource
 import com.rino.moviedb.datasources.RemoteDataSourceImpl
 import com.rino.moviedb.repositories.MoviesRepository
 import com.rino.moviedb.repositories.MoviesRepositoryImpl
+import com.rino.moviedb.ui.contacts.ContactsViewModel
 import com.rino.moviedb.ui.details.MovieDetailsViewModel
 import com.rino.moviedb.ui.favorites.FavoritesViewModel
 import com.rino.moviedb.ui.history.HistoryViewModel
@@ -39,4 +40,5 @@ val appModule = module {
     viewModel { SettingsViewModel(get()) }
     viewModel { HistoryViewModel(get()) }
     viewModel { MovieDetailsViewModel(get()) }
+    viewModel {ContactsViewModel()}
 }

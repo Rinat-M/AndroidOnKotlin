@@ -1,20 +1,27 @@
 package com.rino.moviedb.ui.details
 
+import android.content.pm.PackageManager
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.bumptech.glide.Glide
 import com.rino.moviedb.BuildConfig
+import com.rino.moviedb.R
 import com.rino.moviedb.databinding.FragmentMovieDetailsBinding
 import com.rino.moviedb.databinding.ProgressBarAndErrorMsgBinding
 import com.rino.moviedb.entities.ScreenState
+import com.rino.moviedb.utils.openAppSystemSettings
 import com.rino.moviedb.utils.processFavorite
+import com.rino.moviedb.utils.showSnackBar
 import com.rino.moviedb.utils.toString
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import android.Manifest
+import com.rino.moviedb.ui.contacts.ContactsFragment
 
 class MovieDetailsFragment : Fragment() {
     companion object {
@@ -46,11 +53,25 @@ class MovieDetailsFragment : Fragment() {
         }
     }
 
+    private val permissionResult =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { result ->
+            if (result) {
+                openShareWithContacts()
+            } else {
+                binding.root.showSnackBar(
+                    R.string.need_permissions_to_read_contacts,
+                    actionStringId = R.string.settings,
+                    action = { context?.openAppSystemSettings() }
+                )
+            }
+        }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            movieId = it.getLong(MOVIE_ID_ARG)
-        }
+
+        setHasOptionsMenu(true)
+
+        arguments?.let { movieId = it.getLong(MOVIE_ID_ARG) }
 
         detailsViewModel.fetchData(movieId)
     }
@@ -117,6 +138,42 @@ class MovieDetailsFragment : Fragment() {
                 }
             }
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.details_menu, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean = when (item.itemId) {
+        R.id.share_menu -> {
+            checkPermission()
+            true
+        }
+        else -> super.onOptionsItemSelected(item)
+    }
+
+    private fun checkPermission() {
+        context?.let {
+            when (PackageManager.PERMISSION_GRANTED) {
+                ContextCompat.checkSelfPermission(it, Manifest.permission.READ_CONTACTS) -> {
+                    openShareWithContacts()
+                }
+
+                else -> permissionResult.launch(Manifest.permission.READ_CONTACTS)
+            }
+        }
+    }
+
+    private fun openShareWithContacts() {
+        val bundle = Bundle().apply {
+            putString(ContactsFragment.MESSAGE_ARG, detailsViewModel.messageToShare)
+        }
+
+        findNavController().navigate(
+            R.id.action_navigation_details_to_contacts,
+            bundle
+        )
     }
 
     override fun onDestroyView() {
