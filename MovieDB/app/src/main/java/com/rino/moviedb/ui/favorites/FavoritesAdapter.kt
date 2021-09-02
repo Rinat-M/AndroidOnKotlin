@@ -71,7 +71,7 @@ class FavoritesAdapter(
         }
     }
 
-    class FavoritesDiffCallback : DiffUtil.ItemCallback<Movie>() {
+    private class FavoritesDiffCallback : DiffUtil.ItemCallback<Movie>() {
         override fun areItemsTheSame(oldItem: Movie, newItem: Movie): Boolean =
             oldItem.id == newItem.id
 

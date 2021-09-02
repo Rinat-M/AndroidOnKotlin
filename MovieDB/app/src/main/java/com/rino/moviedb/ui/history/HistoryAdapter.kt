@@ -3,6 +3,8 @@ package com.rino.moviedb.ui.history
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.bumptech.glide.Glide
@@ -15,7 +17,7 @@ class HistoryAdapter(
     context: Context,
     private val items: List<HistoryWithMovie>,
     private val onItemClickListener: OnItemClickListener
-) : RecyclerView.Adapter<HistoryAdapter.HistoryViewHolder>() {
+) : ListAdapter<HistoryWithMovie, HistoryAdapter.HistoryViewHolder>(HistoryDiffCallback()) {
 
     private val circularProgressDrawable by lazy {
         CircularProgressDrawable(context).apply {
@@ -57,6 +59,19 @@ class HistoryAdapter(
                 rootLayout.setOnClickListener { onItemClickListener.onItemClick(item.movieId) }
             }
         }
+
+    }
+
+    private class HistoryDiffCallback : DiffUtil.ItemCallback<HistoryWithMovie>() {
+        override fun areItemsTheSame(
+            oldItem: HistoryWithMovie,
+            newItem: HistoryWithMovie
+        ): Boolean = oldItem.id == newItem.id
+
+        override fun areContentsTheSame(
+            oldItem: HistoryWithMovie,
+            newItem: HistoryWithMovie
+        ): Boolean = oldItem == newItem
 
     }
 

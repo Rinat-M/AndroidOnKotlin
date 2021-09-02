@@ -41,7 +41,11 @@
         android:id="@+id/movie_details"
         android:name="com.rino.moviedb.ui.details.MovieDetailsFragment"
         android:label="Movie details"
-        tools:layout="@layout/fragment_movie_details" />
+        tools:layout="@layout/fragment_movie_details">
+        <action
+            android:id="@+id/action_navigation_details_to_contacts"
+            app:destination="@id/navigation_contacts" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_settings"
@@ -58,5 +62,11 @@
             android:id="@+id/action_navigation_history_to_movie_details"
             app:destination="@id/movie_details" />
     </fragment>
+
+    <fragment
+        android:id="@+id/navigation_contacts"
+        android:name="com.rino.moviedb.ui.contacts.ContactsFragment"
+        android:label="Share with contact"
+        tools:layout="@layout/fragment_contacts" />
 
 </navigation>
