@@ -4,10 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.rino.moviedb.databinding.FragmentContactsBinding
+import com.rino.moviedb.databinding.ProgressBarAndErrorMsgBinding
 import com.rino.moviedb.entities.Contact
+import com.rino.moviedb.entities.ScreenState
 import com.rino.moviedb.utils.sendSms
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -26,6 +29,9 @@ class ContactsFragment : Fragment() {
     private var _binding: FragmentContactsBinding? = null
     private val binding get() = _binding!!
 
+    private var _includeBinding: ProgressBarAndErrorMsgBinding? = null
+    private val includeBinding get() = _includeBinding!!
+
     private val contactsViewModel: ContactsViewModel by viewModel()
 
     private var message: String? = null
@@ -43,6 +49,7 @@ class ContactsFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let { message = it.getString(MESSAGE_ARG) }
+        contactsViewModel.fetchContacts(requireContext())
     }
 
     override fun onCreateView(
@@ -50,8 +57,8 @@ class ContactsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        contactsViewModel.fetchContacts(requireContext())
         _binding = FragmentContactsBinding.inflate(inflater, container, false)
+        _includeBinding = ProgressBarAndErrorMsgBinding.bind(binding.root)
         return binding.root
     }
 
@@ -65,9 +72,31 @@ class ContactsFragment : Fragment() {
             )
         )
 
-        contactsViewModel.contacts.observe(viewLifecycleOwner) {
-            it?.let {
-                binding.contactsRecyclerView.adapter = ContactsAdapter(it, onItemClickListener)
+        contactsViewModel.contacts.observe(viewLifecycleOwner) { state ->
+            when (state) {
+                ScreenState.Loading -> {
+                    binding.contactsRecyclerView.isVisible = false
+                    includeBinding.progressBar.isVisible = true
+                }
+
+                is ScreenState.Success -> {
+                    includeBinding.progressBar.isVisible = false
+
+                    with(binding.contactsRecyclerView) {
+                        isVisible = true
+                        adapter = ContactsAdapter(state.data, onItemClickListener)
+                    }
+                }
+
+                is ScreenState.Error -> {
+                    binding.contactsRecyclerView.isVisible = false
+
+                    with(includeBinding) {
+                        progressBar.isVisible = false
+                        errorMsg.isVisible = true
+                        errorMsg.text = state.error.toString()
+                    }
+                }
             }
         }
     }

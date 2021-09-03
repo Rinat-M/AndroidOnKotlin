@@ -6,18 +6,20 @@ import android.provider.ContactsContract.CommonDataKinds.Phone
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.rino.moviedb.entities.Contact
-import kotlinx.coroutines.MainScope
+import com.rino.moviedb.entities.ScreenState
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class ContactsViewModel : ViewModel() {
-    private val uiScope = MainScope()
-
     private val contactsList: ArrayList<Contact> = arrayListOf()
 
-    private val _contacts: MutableLiveData<List<Contact>> = MutableLiveData()
-    val contacts: LiveData<List<Contact>> = _contacts
+    private val _contacts: MutableLiveData<ScreenState<List<Contact>>> =
+        MutableLiveData(ScreenState.Loading)
+    val contacts: LiveData<ScreenState<List<Contact>>> = _contacts
 
-    fun fetchContacts(context: Context) {
+    fun fetchContacts(context: Context) = viewModelScope.launch(Dispatchers.IO) {
         val cursorWithContacts = context.contentResolver.query(
             ContactsContract.Contacts.CONTENT_URI,
             null,
@@ -45,14 +47,22 @@ class ContactsViewModel : ViewModel() {
                         getContactPhone(context, contactId)
                     } else null
 
-                    contactsList.add(Contact(contactId, displayName, photoThumbUri, hasPhoneNumber == "1", phone))
+                    contactsList.add(
+                        Contact(
+                            contactId,
+                            displayName,
+                            photoThumbUri,
+                            hasPhoneNumber == "1",
+                            phone
+                        )
+                    )
                 }
             }
         }
 
         cursorWithContacts?.close()
 
-        _contacts.value = contactsList
+        _contacts.postValue(ScreenState.Success(contactsList))
     }
 
     private fun getContactPhone(context: Context, contactId: String): String? {

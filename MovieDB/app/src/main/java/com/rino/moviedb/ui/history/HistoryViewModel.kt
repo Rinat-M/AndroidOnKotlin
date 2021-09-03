@@ -3,6 +3,7 @@ package com.rino.moviedb.ui.history
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.rino.moviedb.database.entites.HistoryWithMovie
 import com.rino.moviedb.entities.ScreenState
 import com.rino.moviedb.repositories.MoviesRepository
@@ -11,8 +12,6 @@ import kotlinx.coroutines.*
 class HistoryViewModel(
     private val moviesRepository: MoviesRepository
 ) : ViewModel() {
-
-    private val uiScope = MainScope()
 
     private val _state: MutableLiveData<ScreenState<List<HistoryWithMovie>>> =
         MutableLiveData(ScreenState.Loading)
@@ -24,7 +23,7 @@ class HistoryViewModel(
     private var searchJob: Job? = null
 
     init {
-        uiScope.launch {
+        viewModelScope.launch {
             historyWithMovies = withContext(Dispatchers.IO) {
                 moviesRepository.getHistoryWithMovies()
             }
@@ -43,7 +42,7 @@ class HistoryViewModel(
 
         _state.value = ScreenState.Loading
 
-        searchJob = uiScope.launch {
+        searchJob = viewModelScope.launch {
             delay(500)
             val searchResult = historyWithMovies.filter { historyWithMovie ->
                 historyWithMovie.movie.title.contains(query, ignoreCase = true) ||
