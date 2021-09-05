@@ -12,8 +12,8 @@ android {
         applicationId "com.rino.moviedb"
         minSdk 23
         targetSdk 30
-        versionCode 36
-        versionName "1.6.3"
+        versionCode 37
+        versionName "1.6.4"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }

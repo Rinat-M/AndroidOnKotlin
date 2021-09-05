@@ -26,4 +26,6 @@
     <string name="director">Director:</string>
     <string name="budget">Budget:</string>
     <string name="actors">Actors</string>
+    <string name="birthday">Birthday:</string>
+    <string name="place_of_birth">Place of birth:</string>
 </resources>

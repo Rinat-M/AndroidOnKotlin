@@ -10,6 +10,7 @@ import com.rino.moviedb.ui.details.MovieDetailsViewModel
 import com.rino.moviedb.ui.favorites.FavoritesViewModel
 import com.rino.moviedb.ui.history.HistoryViewModel
 import com.rino.moviedb.ui.home.HomeViewModel
+import com.rino.moviedb.ui.person.PersonViewModel
 import com.rino.moviedb.ui.ratings.RatingsViewModel
 import com.rino.moviedb.ui.settings.SettingsViewModel
 import com.rino.moviedb.wrappers.MainSharedPreferencesWrapper
@@ -40,5 +41,6 @@ val appModule = module {
     viewModel { SettingsViewModel(get()) }
     viewModel { HistoryViewModel(get()) }
     viewModel { MovieDetailsViewModel(get()) }
-    viewModel {ContactsViewModel()}
+    viewModel { ContactsViewModel() }
+    viewModel { PersonViewModel(get()) }
 }

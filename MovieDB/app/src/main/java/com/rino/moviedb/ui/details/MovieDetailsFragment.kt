@@ -21,6 +21,7 @@ import androidx.core.view.isGone
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.rino.moviedb.entities.Actor
 import com.rino.moviedb.ui.contacts.ContactsFragment
+import com.rino.moviedb.ui.person.PersonFragment
 import com.rino.moviedb.utils.*
 
 class MovieDetailsFragment : Fragment() {
@@ -65,6 +66,17 @@ class MovieDetailsFragment : Fragment() {
                 )
             }
         }
+
+    private val onItemClickListener: ActorsAdapter.OnItemClickListener by lazy {
+        object : ActorsAdapter.OnItemClickListener {
+            override fun onItemClick(actorId: Long) {
+                val bundle = Bundle().apply {
+                    putLong(PersonFragment.PERSON_ID_ARG, actorId)
+                }
+                findNavController().navigate(R.id.action_navigation_details_to_person, bundle)
+            }
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -144,7 +156,7 @@ class MovieDetailsFragment : Fragment() {
 
                             with(movieActorsRecyclerView) {
                                 layoutManager = FlexboxLayoutManager(context)
-                                adapter = ActorsAdapter(actors)
+                                adapter = ActorsAdapter(actors, onItemClickListener)
                             }
                         }
                     }
