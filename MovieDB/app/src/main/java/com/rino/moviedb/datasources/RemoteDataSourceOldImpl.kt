@@ -3,7 +3,9 @@ package com.rino.moviedb.datasources
 import com.google.gson.Gson
 import com.rino.moviedb.BuildConfig
 import com.rino.moviedb.entities.Movie
+import com.rino.moviedb.remote.entites.MovieDetailsDTO
 import com.rino.moviedb.remote.entites.MoviesDTO
+import com.rino.moviedb.remote.entites.PersonDTO
 import com.rino.moviedb.utils.getLines
 import java.net.MalformedURLException
 import java.net.URL
@@ -70,5 +72,9 @@ class RemoteDataSourceOldImpl : DataSource {
             return Result.failure(e)
         }
     }
+
+    override fun getMovieDetails(movieId: Long): Result<MovieDetailsDTO?> = Result.success(null)
+
+    override fun getPerson(personId: Long): Result<PersonDTO?> = Result.success(null)
 
 }

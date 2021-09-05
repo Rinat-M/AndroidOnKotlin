@@ -15,13 +15,13 @@ import com.rino.moviedb.R
 import com.rino.moviedb.databinding.FragmentMovieDetailsBinding
 import com.rino.moviedb.databinding.ProgressBarAndErrorMsgBinding
 import com.rino.moviedb.entities.ScreenState
-import com.rino.moviedb.utils.openAppSystemSettings
-import com.rino.moviedb.utils.processFavorite
-import com.rino.moviedb.utils.showSnackBar
-import com.rino.moviedb.utils.toString
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import android.Manifest
+import androidx.core.view.isGone
+import com.google.android.flexbox.FlexboxLayoutManager
+import com.rino.moviedb.entities.Actor
 import com.rino.moviedb.ui.contacts.ContactsFragment
+import com.rino.moviedb.utils.*
 
 class MovieDetailsFragment : Fragment() {
     companion object {
@@ -97,31 +97,54 @@ class MovieDetailsFragment : Fragment() {
                     }
 
                     is ScreenState.Success -> {
-                        val movieWithNote = state.data
-                        val movie = movieWithNote.movie
-                        val note = movieWithNote.note
+                        val movieExtended = state.data
+                        val movie = movieExtended.movie
+                        val note = movieExtended.note
+
+                        val actors = movieExtended.actors.asSequence()
+                            .sortedBy { it.order }
+                            .map { Actor(it.id, it.name, it.order) }
+                            .take(10)
+                            .toList()
 
                         with(binding) {
                             visibilityGroup.isVisible = true
                             includeBinding.progressBar.isVisible = false
 
+                            Glide.with(requireContext())
+                                .load("${BuildConfig.IMAGE_TMDB_BASE_URL}${BuildConfig.IMAGE_TMDB_RELATIVE_PATH}${movie.backdropPath}")
+                                .placeholder(circularProgressDrawable)
+                                .into(movieBanner)
+
                             movieTitle.text = movie.title
                             movieReleaseDate.text = movie.releaseDate.toString("yyyy-MM-dd")
                             movieOverview.text = movie.overview
 
+                            with(movieTagline) {
+                                text = movie.tagline
+                                isGone = movie.tagline.isNullOrEmpty()
+                            }
+
+                            movieDirector.text = movie.director
+                            movieBudget.text = movie.budget?.formatCurrency()
+
                             Glide.with(requireContext())
                                 .load("${BuildConfig.IMAGE_TMDB_BASE_URL}${BuildConfig.IMAGE_TMDB_RELATIVE_PATH}${movie.posterPath}")
-                                .centerCrop()
                                 .placeholder(circularProgressDrawable)
                                 .into(moviePoster)
 
                             movieNote.setText(note?.note)
 
-                            movieFavorite.processFavorite(movieWithNote.isFavorite)
+                            movieFavorite.processFavorite(movieExtended.isFavorite)
                             movieFavorite.setOnClickListener {
-                                movieWithNote.isFavorite = !movieWithNote.isFavorite
-                                movieFavorite.processFavorite(movieWithNote.isFavorite)
-                                detailsViewModel.onFavoriteEvent(movieWithNote)
+                                movieExtended.isFavorite = !movieExtended.isFavorite
+                                movieFavorite.processFavorite(movieExtended.isFavorite)
+                                detailsViewModel.onFavoriteEvent(movieExtended)
+                            }
+
+                            with(movieActorsRecyclerView) {
+                                layoutManager = FlexboxLayoutManager(context)
+                                adapter = ActorsAdapter(actors)
                             }
                         }
                     }

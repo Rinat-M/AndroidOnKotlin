@@ -1,10 +1,9 @@
 package com.rino.moviedb.repositories
 
-import com.rino.moviedb.database.entites.Favorite
-import com.rino.moviedb.database.entites.HistoryWithMovie
-import com.rino.moviedb.database.entites.MovieWithNote
-import com.rino.moviedb.database.entites.Note
+import com.rino.moviedb.database.entites.*
 import com.rino.moviedb.entities.Movie
+import com.rino.moviedb.remote.entites.MovieDetailsDTO
+import com.rino.moviedb.remote.entites.PersonDTO
 import kotlinx.coroutines.flow.Flow
 
 interface MoviesRepository {
@@ -12,6 +11,8 @@ interface MoviesRepository {
     fun getNowPlayingMovies(): Result<List<Movie>>
 
     fun getUpcomingMovies(): Result<List<Movie>>
+
+    fun getMovieDetails(movieId: Long): Result<MovieDetailsDTO?>
 
     fun saveMovie(movie: Movie)
 
@@ -23,7 +24,7 @@ interface MoviesRepository {
 
     fun saveNote(note: Note)
 
-    fun getMovieWithNoteById(id: Long): MovieWithNote
+    fun getMovieExtendedById(id: Long): MovieExtended?
 
     fun addMovieToFavorite(favorite: Favorite)
 
@@ -32,5 +33,9 @@ interface MoviesRepository {
     fun getAllFavoritesMoviesIds(): List<Long>
 
     fun getFavoritesMoviesFlow(): Flow<List<Movie>>
+
+    fun insertMovieActors(movieId: Long, actors: List<Actor>)
+
+    fun getPerson(personId: Long): Result<PersonDTO?>
 
 }

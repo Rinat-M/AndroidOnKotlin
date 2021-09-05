@@ -14,6 +14,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.rino.moviedb.R
 import java.io.BufferedReader
 import java.io.InputStreamReader
+import java.text.NumberFormat
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.net.ssl.HttpsURLConnection
@@ -119,4 +120,9 @@ fun Context.sendSms(phoneNumber: String, msg: String) {
     }
 
     startActivity(sendToIntent)
+}
+
+fun Long.formatCurrency(): String {
+    val locale = Locale( "en", "US")
+    return NumberFormat.getCurrencyInstance(locale).format(this)
 }

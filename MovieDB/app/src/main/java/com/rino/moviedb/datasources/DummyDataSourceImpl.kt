@@ -1,6 +1,8 @@
 package com.rino.moviedb.datasources
 
 import com.rino.moviedb.entities.Movie
+import com.rino.moviedb.remote.entites.MovieDetailsDTO
+import com.rino.moviedb.remote.entites.PersonDTO
 import com.rino.moviedb.utils.toDate
 import java.util.*
 
@@ -22,4 +24,9 @@ class DummyDataSourceImpl : DataSource {
             Movie(8, "/poster.jpg", false, "Overview", "2016-09-09".toDate("yyyy-MM-dd"), listOf(), "Guernika", "en", "Guernika", "", 3.218451, 1, false, 4.41),
         )
     )
+
+    override fun getMovieDetails(movieId: Long): Result<MovieDetailsDTO?> = Result.success(null)
+
+    override fun getPerson(personId: Long): Result<PersonDTO?> = Result.success(null)
+
 }

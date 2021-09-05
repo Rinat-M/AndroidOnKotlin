@@ -17,9 +17,11 @@
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/movie_poster"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="190dp"
+            android:adjustViewBounds="true"
             android:background="@color/blue_grey_100"
+            android:src="@drawable/movie_poster"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"

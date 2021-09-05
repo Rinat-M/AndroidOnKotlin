@@ -11,6 +11,16 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/movie_banner"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@drawable/movie_banner" />
+
         <TextView
             android:id="@+id/movie_title"
             android:layout_width="0dp"
@@ -21,27 +31,40 @@
             android:textStyle="bold"
             app:layout_constraintEnd_toStartOf="@id/movie_favorite"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/movie_banner"
             tools:text="Эмма" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/movie_favorite"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/margin_padding_16dp"
+            android:layout_marginEnd="@dimen/margin_padding_16dp"
+            app:layout_constraintBottom_toBottomOf="@+id/movie_title"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/movie_title"
             app:srcCompat="@drawable/ic_favorite_filled" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/movie_poster"
-            android:layout_width="180dp"
-            android:layout_height="280dp"
+            android:layout_width="140dp"
+            android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin_padding_16dp"
+            android:adjustViewBounds="true"
             android:background="@color/blue_grey_100"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/movie_title"
-            app:srcCompat="@drawable/ic_image" />
+            app:srcCompat="@drawable/ic_image"
+            tools:src="@drawable/movie_poster" />
+
+        <TextView
+            android:id="@+id/movie_tagline"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_padding_16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/movie_poster"
+            tools:text="Beyond fear, destiny awaits." />
 
         <TextView
             android:id="@+id/release_date_title"
@@ -66,6 +89,52 @@
             app:layout_constraintStart_toEndOf="@id/release_date_title"
             tools:text="2018-12-06" />
 
+        <TextView
+            android:id="@+id/movie_director_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_padding_8dp"
+            android:layout_marginTop="@dimen/margin_padding_8dp"
+            android:text="@string/director"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size_14sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@id/movie_poster"
+            app:layout_constraintTop_toBottomOf="@id/release_date_title" />
+
+        <TextView
+            android:id="@+id/movie_director"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_padding_8dp"
+            android:textSize="@dimen/text_size_14sp"
+            app:layout_constraintBaseline_toBaselineOf="@+id/movie_director_title"
+            app:layout_constraintStart_toEndOf="@id/movie_director_title"
+            tools:text="Denis Villeneuve" />
+
+        <TextView
+            android:id="@+id/movie_budget_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_padding_8dp"
+            android:layout_marginTop="@dimen/margin_padding_8dp"
+            android:text="@string/budget"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size_14sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@id/movie_poster"
+            app:layout_constraintTop_toBottomOf="@id/movie_director_title" />
+
+        <TextView
+            android:id="@+id/movie_budget"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_padding_8dp"
+            android:textSize="@dimen/text_size_14sp"
+            app:layout_constraintBaseline_toBaselineOf="@+id/movie_budget_title"
+            app:layout_constraintStart_toEndOf="@id/movie_budget_title"
+            tools:text="1650000000" />
+
         <LinearLayout
             android:id="@+id/overview_layout"
             android:layout_width="0dp"
@@ -74,7 +143,7 @@
             android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/movie_poster">
+            app:layout_constraintTop_toBottomOf="@id/movie_tagline">
 
             <TextView
                 android:id="@+id/overview_title"
@@ -97,15 +166,43 @@
 
         </LinearLayout>
 
+        <TextView
+            android:id="@+id/movies_actors_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_padding_16dp"
+            android:layout_marginTop="@dimen/margin_padding_16dp"
+            android:layout_marginEnd="@dimen/margin_padding_16dp"
+            android:text="@string/actors"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size_16sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/overview_layout" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/movie_actors_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_padding_16dp"
+            android:layout_marginTop="@dimen/margin_padding_8dp"
+            android:layout_marginEnd="@dimen/margin_padding_16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/movies_actors_title"
+            tools:itemCount="2" />
+
         <LinearLayout
             android:id="@+id/note_layout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin_padding_16dp"
             android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/overview_layout">
+            app:layout_constraintTop_toBottomOf="@id/movie_actors_recycler_view">
 
             <TextView
                 android:id="@+id/note_title"
@@ -145,7 +242,7 @@
             android:id="@+id/visibility_group"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:constraint_referenced_ids="movie_poster,movie_release_date,release_date_title,overview_layout,movie_title,movie_favorite,note_layout" />
+            app:constraint_referenced_ids="movie_poster,movie_release_date,release_date_title,overview_layout,movie_title,movie_favorite,note_layout, movie_director_title, movie_director, movie_tagline, movie_budget_title, movie_budget, movies_actors_title, movie_actors_recycler_view" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -2,14 +2,13 @@ package com.rino.moviedb.repositories
 
 import com.rino.moviedb.database.dao.MovieGetDao
 import com.rino.moviedb.database.dao.MovieSetDao
-import com.rino.moviedb.database.entites.Favorite
-import com.rino.moviedb.database.entites.History
-import com.rino.moviedb.database.entites.MovieWithNote
-import com.rino.moviedb.database.entites.Note
+import com.rino.moviedb.database.entites.*
 import com.rino.moviedb.datasources.DataSource
 import com.rino.moviedb.entities.Movie
 import com.rino.moviedb.entities.coreModel
 import com.rino.moviedb.entities.dbModel
+import com.rino.moviedb.remote.entites.MovieDetailsDTO
+import com.rino.moviedb.remote.entites.PersonDTO
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
@@ -22,6 +21,9 @@ class MoviesRepositoryImpl(
     override fun getNowPlayingMovies(): Result<List<Movie>> = dataSource.getNowPlayingMovies()
 
     override fun getUpcomingMovies(): Result<List<Movie>> = dataSource.getUpcomingMovies()
+
+    override fun getMovieDetails(movieId: Long): Result<MovieDetailsDTO?> =
+        dataSource.getMovieDetails(movieId)
 
     override fun saveMovie(movie: Movie) = movieSetDao.insertMovie(movie.dbModel)
 
@@ -36,8 +38,8 @@ class MoviesRepositoryImpl(
 
     override fun saveNote(note: Note) = movieSetDao.insertNote(note)
 
-    override fun getMovieWithNoteById(id: Long): MovieWithNote =
-        movieGetDao.getMovieWithNoteById(id)
+    override fun getMovieExtendedById(id: Long): MovieExtended? =
+        movieGetDao.getMovieExtendedById(id)
 
     override fun addMovieToFavorite(favorite: Favorite) = movieSetDao.insertToFavourite(favorite)
 
@@ -53,4 +55,10 @@ class MoviesRepositoryImpl(
                     it.coreModel.apply { isFavorite = true }
                 }
             }
+
+    override fun insertMovieActors(movieId: Long, actors: List<Actor>) =
+        movieSetDao.insertMovieActors(movieId, actors)
+
+    override fun getPerson(personId: Long): Result<PersonDTO?> = dataSource.getPerson(personId)
+
 }
