@@ -76,6 +76,16 @@
         android:id="@+id/navigation_person"
         android:name="com.rino.moviedb.ui.person.PersonFragment"
         android:label="Actor details"
-        tools:layout="@layout/fragment_person" />
+        tools:layout="@layout/fragment_person">
+        <action
+            android:id="@+id/action_navigation_person_to_map"
+            app:destination="@id/navigation_map" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_map"
+        android:name="com.rino.moviedb.ui.map.MapFragment"
+        android:label="Map"
+        tools:layout="@layout/fragment_map" />
 
 </navigation>

@@ -28,4 +28,11 @@
     <string name="actors">Actors</string>
     <string name="birthday">Birthday:</string>
     <string name="place_of_birth">Place of birth:</string>
+    <string name="search_query_hint">Enter you request</string>
+    <string name="map_mode">Map mode</string>
+    <string name="normal">Normal</string>
+    <string name="satellites">Satellites</string>
+    <string name="terrain">Terrain</string>
+    <string name="traffic">Traffic</string>
+    <string name="need_permissions_to_location">You must grant permission to your location</string>
 </resources>

@@ -6,6 +6,7 @@ import android.graphics.PorterDuff
 import android.net.Uri
 import android.provider.Settings
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.appcompat.widget.AppCompatImageView
@@ -123,6 +124,12 @@ fun Context.sendSms(phoneNumber: String, msg: String) {
 }
 
 fun Long.formatCurrency(): String {
-    val locale = Locale( "en", "US")
+    val locale = Locale("en", "US")
     return NumberFormat.getCurrencyInstance(locale).format(this)
+}
+
+fun Context.hideKeyboard(view: View) {
+    val imm: InputMethodManager =
+        this.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+    imm.hideSoftInputFromWindow(view.windowToken, 0)
 }
