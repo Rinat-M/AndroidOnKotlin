@@ -35,4 +35,6 @@
     <string name="terrain">Terrain</string>
     <string name="traffic">Traffic</string>
     <string name="need_permissions_to_location">You must grant permission to your location</string>
+    <string name="geofence_receiver">Geofence receiver</string>
+    <string name="geofence_transition_invalid_type">Geofence transition invalid type %s</string>
 </resources>

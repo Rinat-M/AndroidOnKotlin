@@ -3,27 +3,37 @@ package com.rino.moviedb.ui.map
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.SearchView
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.CircleOptions
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 import com.rino.moviedb.R
 import com.rino.moviedb.databinding.FragmentMapBinding
 import com.rino.moviedb.utils.hideKeyboard
 import com.rino.moviedb.utils.openAppSystemSettings
 import com.rino.moviedb.utils.showSnackBar
+import com.rino.moviedb.utils.showToast
+import com.rino.moviedb.wrappers.GeofencesWrapper
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MapFragment : Fragment() {
 
     companion object {
+        private const val TAG = "MapFragment"
         const val ADDRESS_TAG = "ADDRESS_TAG"
+        private const val GEOFENCE_RADIUS = 200.0f
 
         fun newInstance(address: String) = MapFragment().apply {
             arguments?.putString(ADDRESS_TAG, address)
@@ -69,6 +79,34 @@ class MapFragment : Fragment() {
         }
 
         defaultAddress?.let { mapViewModel.searchByLocationName(it) }
+
+        map.setOnMapLongClickListener { latLng ->
+            if (Build.VERSION.SDK_INT >= 29) {
+                // need background permission to work with geofence
+                if (ContextCompat.checkSelfPermission(
+                        requireContext(),
+                        Manifest.permission.ACCESS_BACKGROUND_LOCATION
+                    ) == PackageManager.PERMISSION_GRANTED
+                ) {
+                    addAndDrawGeofence(latLng)
+                } else {
+                    permissionResult.launch(Manifest.permission.ACCESS_BACKGROUND_LOCATION)
+                }
+
+            } else {
+                addAndDrawGeofence(latLng)
+            }
+        }
+    }
+
+    private fun addAndDrawGeofence(latLng: LatLng) {
+        map.addMarker(
+            MarkerOptions()
+                .position(latLng)
+                .title("${latLng.latitude},${latLng.longitude}")
+        )
+        addCircle(latLng)
+        addGeofence(latLng)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -141,6 +179,35 @@ class MapFragment : Fragment() {
         }
 
         else -> super.onOptionsItemSelected(item)
+    }
+
+    private fun addCircle(latLng: LatLng) {
+        val circleOptions = CircleOptions().apply {
+            center(latLng)
+            radius(GEOFENCE_RADIUS.toDouble())
+            strokeColor(ContextCompat.getColor(requireContext(), R.color.red))
+            fillColor(ContextCompat.getColor(requireContext(), R.color.red_with_alpha))
+            strokeWidth(4f)
+        }
+        map.addCircle(circleOptions)
+    }
+
+    private fun addGeofence(latLng: LatLng) {
+        val geofences = listOf(latLng)
+        GeofencesWrapper(context)
+            .addGeofences(geofences, GEOFENCE_RADIUS)
+            ?.run {
+                addOnSuccessListener {
+                    // Geofences added
+                    Log.d(TAG, "Geofences added")
+                }
+                addOnFailureListener { exception ->
+                    // Failed to add geofences
+                    val errorMessage = GeofencesWrapper.getErrorString(exception)
+                    errorMessage?.let { context?.showToast(it) }
+                    Log.e(TAG, "Failed to add geofences with error: $errorMessage", exception)
+                }
+            }
     }
 
     override fun onDestroy() {

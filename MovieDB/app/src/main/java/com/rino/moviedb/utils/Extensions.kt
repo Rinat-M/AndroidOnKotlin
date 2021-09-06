@@ -82,6 +82,10 @@ fun Context.showToast(@StringRes stringId: Int, duration: Int = Toast.LENGTH_SHO
     Toast.makeText(this, stringId, duration).show()
 }
 
+fun Context.showToast(msg: String, duration: Int = Toast.LENGTH_SHORT) {
+    Toast.makeText(this, msg, duration).show()
+}
+
 fun AppCompatImageView.processFavorite(isFavorite: Boolean) {
     if (isFavorite) {
         setColorFilter(
@@ -133,3 +137,7 @@ fun Context.hideKeyboard(view: View) {
         this.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
     imm.hideSoftInputFromWindow(view.windowToken, 0)
 }
+
+fun Float.roundTo(n: Int): Float = "%.${n}f".format(Locale.ENGLISH, this).toFloat()
+
+fun Double.roundTo(n: Int): Double = "%.${n}f".format(Locale.ENGLISH, this).toDouble()
