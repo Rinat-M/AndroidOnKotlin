@@ -1,32 +1,36 @@
 package com.rino.moviedb.ui.details
 
+import android.Manifest
+import android.app.PendingIntent
+import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
+import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavDeepLinkBuilder
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.bumptech.glide.Glide
+import com.google.android.flexbox.FlexboxLayoutManager
 import com.rino.moviedb.BuildConfig
 import com.rino.moviedb.R
 import com.rino.moviedb.databinding.FragmentMovieDetailsBinding
 import com.rino.moviedb.databinding.ProgressBarAndErrorMsgBinding
-import com.rino.moviedb.entities.ScreenState
-import org.koin.androidx.viewmodel.ext.android.viewModel
-import android.Manifest
-import androidx.core.view.isGone
-import com.google.android.flexbox.FlexboxLayoutManager
 import com.rino.moviedb.entities.Actor
+import com.rino.moviedb.entities.ScreenState
 import com.rino.moviedb.ui.contacts.ContactsFragment
 import com.rino.moviedb.ui.person.PersonFragment
 import com.rino.moviedb.utils.*
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MovieDetailsFragment : Fragment() {
     companion object {
-        const val MOVIE_ID_ARG = "MOVIE_ID_ARG"
+        const val MOVIE_ID_ARG = "movieId"
 
         fun newInstance(movieId: Long) =
             MovieDetailsFragment().apply {
@@ -34,7 +38,19 @@ class MovieDetailsFragment : Fragment() {
                     putLong(MOVIE_ID_ARG, movieId)
                 }
             }
+
+        fun createDeepLink(context: Context, movieId: Long): PendingIntent {
+            val arg = MovieDetailsFragmentArgs(movieId).toBundle()
+
+            return NavDeepLinkBuilder(context)
+                .setGraph(R.navigation.mobile_navigation)
+                .setDestination(R.id.movie_details)
+                .setArguments(arg)
+                .createPendingIntent()
+        }
     }
+
+    private val args: MovieDetailsFragmentArgs by navArgs()
 
     private val detailsViewModel: MovieDetailsViewModel by viewModel()
 
@@ -43,8 +59,6 @@ class MovieDetailsFragment : Fragment() {
 
     private var _includeBinding: ProgressBarAndErrorMsgBinding? = null
     private val includeBinding get() = _includeBinding!!
-
-    private var movieId: Long = 0
 
     private val circularProgressDrawable by lazy {
         CircularProgressDrawable(requireContext()).apply {
@@ -83,9 +97,7 @@ class MovieDetailsFragment : Fragment() {
 
         setHasOptionsMenu(true)
 
-        arguments?.let { movieId = it.getLong(MOVIE_ID_ARG) }
-
-        detailsViewModel.fetchData(movieId)
+        detailsViewModel.fetchData(args.movieId)
     }
 
     override fun onCreateView(
@@ -139,6 +151,7 @@ class MovieDetailsFragment : Fragment() {
 
                             movieDirector.text = movie.director
                             movieBudget.text = movie.budget?.formatCurrency()
+                            movieId.text = movie.id.toString()
 
                             Glide.with(requireContext())
                                 .load("${BuildConfig.IMAGE_TMDB_BASE_URL}${BuildConfig.IMAGE_TMDB_RELATIVE_PATH}${movie.posterPath}")
@@ -212,7 +225,7 @@ class MovieDetailsFragment : Fragment() {
     }
 
     override fun onDestroyView() {
-        detailsViewModel.saveNote(movieId, binding.movieNote.text.toString())
+        detailsViewModel.saveNote(args.movieId, binding.movieNote.text.toString())
 
         super.onDestroyView()
         _binding = null

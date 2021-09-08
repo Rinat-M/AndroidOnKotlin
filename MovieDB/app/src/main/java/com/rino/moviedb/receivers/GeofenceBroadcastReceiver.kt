@@ -1,28 +1,27 @@
 package com.rino.moviedb.receivers
 
-import android.app.NotificationManager
+import android.annotation.SuppressLint
 import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.util.Log
-import androidx.core.app.NotificationCompat
 import com.google.android.gms.location.Geofence
 import com.google.android.gms.location.GeofenceStatusCodes
 import com.google.android.gms.location.GeofencingEvent
 import com.rino.moviedb.R
+import com.rino.moviedb.helpers.NotificationHelper
 import com.rino.moviedb.ui.MainActivity
 import com.rino.moviedb.utils.showToast
 
 class GeofenceBroadcastReceiver : BroadcastReceiver() {
     companion object {
         private const val TAG = "GeofenceBroadcastReceiver"
-        const val CHANNEL_ID = "geofence_receiver_channel"
     }
 
     private var messageId = 0
 
-    override fun onReceive(context: Context?, intent: Intent?) {
+    override fun onReceive(context: Context?, intent: Intent) {
         Log.d(TAG, "onReceive event")
 
         val geofencingEvent = GeofencingEvent.fromIntent(intent)
@@ -83,23 +82,22 @@ class GeofenceBroadcastReceiver : BroadcastReceiver() {
         return "Geofence was triggered by event $trigger: $geofences"
     }
 
+    @SuppressLint("UnspecifiedImmutableFlag")
     private fun sendNotification(context: Context?, message: String) {
         context?.let {
+            val notificationHelper = NotificationHelper(it)
+
             val intent = Intent(it, MainActivity::class.java)
             val pendingIntent =
                 PendingIntent.getActivity(it, 555, intent, PendingIntent.FLAG_UPDATE_CURRENT)
 
+            val builder = notificationHelper.createGeofenceNotification(
+                "Geofence event",
+                message,
+                pendingIntent = pendingIntent
+            )
 
-            val builder = NotificationCompat.Builder(it, CHANNEL_ID)
-                .setSmallIcon(R.mipmap.ic_launcher)
-                .setPriority(NotificationCompat.PRIORITY_HIGH)
-                .setContentTitle(it.getString(R.string.geofence_receiver))
-                .setContentText(message)
-                .setContentIntent(pendingIntent)
-
-            val notificationManager =
-                it.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-            notificationManager.notify(messageId++, builder.build())
+            notificationHelper.notify(messageId++, builder)
         }
     }
 }

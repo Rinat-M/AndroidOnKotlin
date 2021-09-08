@@ -4,6 +4,7 @@ plugins {
     id 'kotlin-parcelize'
     id 'kotlin-kapt'
     id 'com.google.gms.google-services'
+    id 'androidx.navigation.safeargs.kotlin'
 }
 
 android {
@@ -13,8 +14,8 @@ android {
         applicationId "com.rino.moviedb"
         minSdk 23
         targetSdk 30
-        versionCode 41
-        versionName "1.7.1"
+        versionCode 42
+        versionName "1.7.2"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
