@@ -6,6 +6,7 @@ import android.graphics.PorterDuff
 import android.net.Uri
 import android.provider.Settings
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.appcompat.widget.AppCompatImageView
@@ -14,6 +15,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.rino.moviedb.R
 import java.io.BufferedReader
 import java.io.InputStreamReader
+import java.text.NumberFormat
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.net.ssl.HttpsURLConnection
@@ -80,6 +82,10 @@ fun Context.showToast(@StringRes stringId: Int, duration: Int = Toast.LENGTH_SHO
     Toast.makeText(this, stringId, duration).show()
 }
 
+fun Context.showToast(msg: String, duration: Int = Toast.LENGTH_SHORT) {
+    Toast.makeText(this, msg, duration).show()
+}
+
 fun AppCompatImageView.processFavorite(isFavorite: Boolean) {
     if (isFavorite) {
         setColorFilter(
@@ -120,3 +126,18 @@ fun Context.sendSms(phoneNumber: String, msg: String) {
 
     startActivity(sendToIntent)
 }
+
+fun Long.formatCurrency(): String {
+    val locale = Locale("en", "US")
+    return NumberFormat.getCurrencyInstance(locale).format(this)
+}
+
+fun Context.hideKeyboard(view: View) {
+    val imm: InputMethodManager =
+        this.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+    imm.hideSoftInputFromWindow(view.windowToken, 0)
+}
+
+fun Float.roundTo(n: Int): Float = "%.${n}f".format(Locale.ENGLISH, this).toFloat()
+
+fun Double.roundTo(n: Int): Double = "%.${n}f".format(Locale.ENGLISH, this).toDouble()

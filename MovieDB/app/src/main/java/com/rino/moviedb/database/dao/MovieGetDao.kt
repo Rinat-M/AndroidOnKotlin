@@ -4,7 +4,7 @@ import androidx.room.Dao
 import androidx.room.Query
 import com.rino.moviedb.database.entites.HistoryWithMovie
 import com.rino.moviedb.database.entites.Movie
-import com.rino.moviedb.database.entites.MovieWithNote
+import com.rino.moviedb.database.entites.MovieExtended
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -19,14 +19,14 @@ interface MovieGetDao {
     @Query(
         """
         SELECT
-            M.id,
+            M.*,
             ifnull(F.id, 0) as isFavorite 
         FROM Movie as M 
         LEFT JOIN Favorite as F
             ON M.id = F.movieId
         WHERE M.id = :id"""
     )
-    fun getMovieWithNoteById(id: Long): MovieWithNote
+    fun getMovieExtendedById(id: Long): MovieExtended?
 
     @Query("SELECT movieId FROM Favorite")
     fun getAllFavoritesMoviesIds(): List<Long>

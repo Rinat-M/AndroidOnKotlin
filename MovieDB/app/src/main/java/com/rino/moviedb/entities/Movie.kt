@@ -29,5 +29,10 @@ data class Movie(
     val video: Boolean,
     @SerializedName("vote_average")
     val voteAverage: Double,
-    var isFavorite: Boolean? = false
+    var isFavorite: Boolean? = false,
+    val budget: Long? = null,
+    val imdbId: String? = null,
+    val revenue: Long? = null,
+    val tagline: String? = null,
+    val director: String? = null
 ) : Parcelable

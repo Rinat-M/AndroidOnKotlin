@@ -18,5 +18,10 @@ data class Movie(
     val popularity: Double,
     val voteCount: Int,
     val video: Boolean,
-    val voteAverage: Double
+    val voteAverage: Double,
+    val budget: Long? = null,
+    val imdbId: String? = null,
+    val revenue: Long? = null,
+    val tagline: String? = null,
+    val director: String? = null
 )

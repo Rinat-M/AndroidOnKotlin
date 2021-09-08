@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.*
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.fragment.findNavController
 import com.rino.moviedb.R
 import com.rino.moviedb.databinding.FragmentHomeBinding
@@ -16,6 +17,7 @@ import com.rino.moviedb.ui.details.MovieDetailsFragment
 import com.rino.moviedb.ui.home.adapters.CategoryWithMoviesAdapter
 import com.rino.moviedb.ui.home.adapters.MoviesAdapter
 import com.rino.moviedb.utils.showSnackBar
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class HomeFragment : Fragment() {
@@ -33,16 +35,18 @@ class HomeFragment : Fragment() {
     private val onItemClickListener by lazy {
         object : MoviesAdapter.OnItemClickListener {
             override fun onItemClick(movie: Movie) {
-                homeViewModel.saveToHistory(movie)
+                homeViewModel.viewModelScope.launch {
+                    homeViewModel.saveToHistoryAsync(movie).await()
 
-                val bundle = Bundle().apply {
-                    putLong(MovieDetailsFragment.MOVIE_ID_ARG, movie.id)
+                    val bundle = Bundle().apply {
+                        putLong(MovieDetailsFragment.MOVIE_ID_ARG, movie.id)
+                    }
+
+                    findNavController().navigate(
+                        R.id.action_navigation_home_to_movie_details,
+                        bundle
+                    )
                 }
-
-                findNavController().navigate(
-                    R.id.action_navigation_home_to_movie_details,
-                    bundle
-                )
             }
         }
     }

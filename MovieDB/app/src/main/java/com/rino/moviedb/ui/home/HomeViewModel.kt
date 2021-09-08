@@ -1,5 +1,6 @@
 package com.rino.moviedb.ui.home
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -7,15 +8,22 @@ import androidx.lifecycle.viewModelScope
 import com.rino.moviedb.database.entites.Favorite
 import com.rino.moviedb.entities.AppState
 import com.rino.moviedb.entities.Movie
+import com.rino.moviedb.entities.coreMovieModel
+import com.rino.moviedb.entities.dbActorModel
 import com.rino.moviedb.repositories.MoviesRepository
 import com.rino.moviedb.wrappers.MainSharedPreferencesWrapper
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
 class HomeViewModel(
     private val moviesRepository: MoviesRepository,
     private val mainPreferences: MainSharedPreferencesWrapper
 ) : ViewModel() {
+
+    companion object {
+        const val TAG = "HomeViewModel"
+    }
 
     private val _appState: MutableLiveData<AppState> = MutableLiveData(AppState.Loading)
     val appState: LiveData<AppState> = _appState
@@ -62,9 +70,21 @@ class HomeViewModel(
         }.start()
     }
 
-    fun saveToHistory(movie: Movie) = viewModelScope.launch(Dispatchers.IO) {
-        moviesRepository.saveMovie(movie)
-        moviesRepository.saveMovieToHistory(movie.id)
+    fun saveToHistoryAsync(movie: Movie) = viewModelScope.async(Dispatchers.IO) {
+        moviesRepository.getMovieDetails(movie.id)
+            .onSuccess { movieDetailsDTO ->
+                movieDetailsDTO?.let {
+                    val director = it.credits.crew.firstOrNull { crew -> crew.job == "Director" }
+                    val coreMovie = it.coreMovieModel
+
+                    moviesRepository.saveMovie(coreMovie.copy(director = director?.name))
+                    moviesRepository.saveMovieToHistory(it.id)
+
+                    val actors = it.credits.cast.map { castDTO -> castDTO.dbActorModel }
+                    moviesRepository.insertMovieActors(coreMovie.id, actors)
+                }
+            }
+            .onFailure { Log.e(TAG, "Error while saving movie to history!", it) }
     }
 
     fun onFavoriteEvent(movie: Movie, isFavorite: Boolean) {

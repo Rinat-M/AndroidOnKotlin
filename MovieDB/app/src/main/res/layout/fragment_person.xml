@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/person_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_padding_16dp"
+            android:textColor="@color/black"
+            android:textSize="@dimen/group_title_size"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Tom Hardy" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/person_profile"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_padding_16dp"
+            android:adjustViewBounds="true"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/person_name"
+            tools:src="@drawable/actor_profile" />
+
+        <TextView
+            android:id="@+id/person_birthday_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_padding_16dp"
+            android:text="@string/birthday"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size_14sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@id/person_profile"
+            app:layout_constraintTop_toBottomOf="@id/person_name" />
+
+        <TextView
+            android:id="@+id/person_birthday"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_padding_16dp"
+            app:layout_constraintBaseline_toBaselineOf="@id/person_birthday_title"
+            app:layout_constraintStart_toEndOf="@id/person_birthday_title"
+            tools:text="1963-12-18" />
+
+        <TextView
+            android:id="@+id/person_place_of_birth_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_padding_16dp"
+            android:text="@string/place_of_birth"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size_14sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@id/person_profile"
+            app:layout_constraintTop_toBottomOf="@id/person_birthday_title" />
+
+        <TextView
+            android:id="@+id/person_place_of_birth"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_padding_16dp"
+            android:layout_marginTop="@dimen/margin_padding_8dp"
+            android:layout_marginEnd="@dimen/margin_padding_16dp"
+            android:background="@drawable/bg_round_shape_gray"
+            android:padding="@dimen/margin_padding_8dp"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/person_profile"
+            app:layout_constraintTop_toBottomOf="@id/person_place_of_birth_title"
+            tools:text="Shawnee, Oklahoma, USA" />
+
+        <TextView
+            android:id="@+id/person_biography"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_padding_16dp"
+            android:lineSpacingExtra="4sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/person_profile"
+            tools:text=" Pitt's first leading roles in big-budget productions came with A River Runs Through It (1992) and Interview with the Vampire (1994). He was cast opposite Anthony Hopkins in the 1994 drama Legends of the Fall, which earned him his first Golden Globe nomination. In 1995 he gave critically acclaimed performances in the crime thriller Seven and the science fiction film 12 Monkeys, the latter securing him a Golden Globe Award for Best Supporting Actor and an Academy Award nomination.\n\nFour years later, in 1999, Pitt starred in the cult hit Fight Club. He then starred in the major international hit as Rusty Ryan in Ocean's Eleven (2001) and its sequels, Ocean's Twelve (2004) and Ocean's Thirteen (2007). His greatest commercial successes have been Troy (2004) and Mr.  Mrs. Smith (2005)." />
+
+        <include layout="@layout/progress_bar_and_error_msg" />
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/visibility_group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:constraint_referenced_ids="person_biography,person_birthday,person_birthday_title,person_name,person_profile,person_place_of_birth,person_place_of_birth_title" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.core.widget.NestedScrollView>
