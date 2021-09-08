@@ -179,3 +179,67 @@
 ![homework10_2](images/homework10_2.gif)
 ![homework10_3](images/homework10_3.gif)
 ![homework10_4](images/homework10_4.gif)
+
+# Домашнее задание 11.
+1. Добавьте в ваше приложение возможность получения push-уведомлений.
+2. \* Изучите Channels и их свойства.
+
+\* Дополнительное задание
+
+# Получившийся результат.
+
+Что было сделано:
+1. Подключил Firebase Cloud Messaging в проект.
+2. Немного изменил экран информации о фильме, добавил вывод ID фильма. В дальнейшем он понадобится.
+3. Создал отдельный класс NotificationHelper для управления уведомлениями. 
+4. В MyApplication создаю каналы через NotificationHelper(this).createChannels(). У меня 2 канала: один для geofence receiver, а второй - это новый канал для получения информации об избранных фильмах.
+5. Все id, name и description каналов добавил в strings.xml.
+6. Расширил MovieRepository методом getFavoriteMovieById - если фильм в избранных, то он вернется, иначе null.
+7. Переделал GeofenceBroadcastReceiver на использование NotificationHelper.
+8. Добавил в проект использование SafeArgs.
+9. Переделал MovieDetailsFragment на использование SafeArgs.
+10. Реализовал MyFirebaseMessagingService для обработки сообщений от Firebase Cloud Messaging. Реализовал обработку data-сообщений в onMessageReceived. 
+11. Создал метод createDeepLink в companion object-е MovieDetailsFragment, чтобы можно было создавать PendingIntent до экрана с конкретным фильмом.
+12. Переделал всё взаимодействие в проекте через SafeArgs.
+13. По итогу реализована следующая логика - при получении data-сообщения от Firebase Cloud Messaging анализируется наличие параметра movieId, если этот параметр указан и id этого фильма находится в списке favorite, то я отправляю уведомление в стиле BigPictureStyle с датой релиза. По нажатию на этой уведомление открывается экран с информацией о конкретном фильме.
+
+![homework11_1](images/homework11_1.gif)
+![homework11_2](images/homework11_2.gif)
+![homework11_3](images/homework11_3.png)
+
+## **Небольшой мануал по использованию Firebase Cloud Messaging через POST-запросы.**
+
+Я выяснил, что есть 2 типа сообщений, отправляемых через FCM: **data message и notification message**. Разница в том, что если мы посылаем notification message, то он попадает onMessageReceived только в случае, если приложение находится в foreground-е, другими словами, если приложение свернуто, то onMessageReceived не сработает. При это, если отправляется data message, то он попадает в onMessageReceived в любом случае. Ах да, в обоих случаях сообщения проходят через handleIntent.  
+Теперь к конкретике. **Для отправки POST-запросов через FCM нужно использовать URL => https://fcm.googleapis.com/fcm/send . Header-ы следующие:**
+1) Content-Type: *application/json*
+2) Authorization: *key=<SERVER_KEY>* => его можно найти в Firebase -> Project Settings -> Cloud Messaging
+
+### **Пример notification message:** 
+```
+{  
+    "to": "ТОКЕН_УСТРОЙСТВА",  
+    "collapse_key": "com.rino.moviedb",  
+    "notification": {  
+        "title": "Notification Title from Notification",  
+        "priority": "high",  
+        "body": "Sending Notification Body From Notification",  
+        "icon": "icon_url",  
+        "click_action": "action_url",  
+        "movieId": "566525"  
+    }  
+}
+```  
+
+### **Пример data message:** 
+```
+{  
+    "to": "ТОКЕН_УСТРОЙСТВА",  
+    "collapse_key": "com.rino.moviedb",  
+    "data": {  
+        "priority" : "high",  
+        "body": "Sending Notification Body From Data",  
+        "title": "Notification Title from Data",  
+        "movieId": "566525"  
+    }  
+}
+```  
