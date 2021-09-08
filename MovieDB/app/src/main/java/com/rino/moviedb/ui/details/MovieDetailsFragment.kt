@@ -23,20 +23,16 @@ import com.rino.moviedb.databinding.FragmentMovieDetailsBinding
 import com.rino.moviedb.databinding.ProgressBarAndErrorMsgBinding
 import com.rino.moviedb.entities.Actor
 import com.rino.moviedb.entities.ScreenState
-import com.rino.moviedb.ui.contacts.ContactsFragment
-import com.rino.moviedb.ui.person.PersonFragment
+import com.rino.moviedb.ui.contacts.ContactsFragmentArgs
+import com.rino.moviedb.ui.person.PersonFragmentArgs
 import com.rino.moviedb.utils.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MovieDetailsFragment : Fragment() {
     companion object {
-        const val MOVIE_ID_ARG = "movieId"
-
         fun newInstance(movieId: Long) =
             MovieDetailsFragment().apply {
-                arguments = Bundle().apply {
-                    putLong(MOVIE_ID_ARG, movieId)
-                }
+                arguments = MovieDetailsFragmentArgs(movieId).toBundle()
             }
 
         fun createDeepLink(context: Context, movieId: Long): PendingIntent {
@@ -84,9 +80,7 @@ class MovieDetailsFragment : Fragment() {
     private val onItemClickListener: ActorsAdapter.OnItemClickListener by lazy {
         object : ActorsAdapter.OnItemClickListener {
             override fun onItemClick(actorId: Long) {
-                val bundle = Bundle().apply {
-                    putLong(PersonFragment.PERSON_ID_ARG, actorId)
-                }
+                val bundle = PersonFragmentArgs(actorId).toBundle()
                 findNavController().navigate(R.id.action_navigation_details_to_person, bundle)
             }
         }
@@ -214,9 +208,7 @@ class MovieDetailsFragment : Fragment() {
     }
 
     private fun openShareWithContacts() {
-        val bundle = Bundle().apply {
-            putString(ContactsFragment.MESSAGE_ARG, detailsViewModel.messageToShare)
-        }
+        val bundle = ContactsFragmentArgs(detailsViewModel.messageToShare).toBundle()
 
         findNavController().navigate(
             R.id.action_navigation_details_to_contacts,

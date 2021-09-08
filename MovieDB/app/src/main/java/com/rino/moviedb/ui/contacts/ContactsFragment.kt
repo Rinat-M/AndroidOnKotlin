@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.rino.moviedb.databinding.FragmentContactsBinding
 import com.rino.moviedb.databinding.ProgressBarAndErrorMsgBinding
@@ -16,15 +17,13 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ContactsFragment : Fragment() {
     companion object {
-        const val MESSAGE_ARG = "MESSAGE_ARG"
-
         fun newInstance(message: String) =
             ContactsFragment().apply {
-                arguments = Bundle().apply {
-                    putString(MESSAGE_ARG, message)
-                }
+                arguments = ContactsFragmentArgs(message).toBundle()
             }
     }
+
+    private val args: ContactsFragmentArgs by navArgs()
 
     private var _binding: FragmentContactsBinding? = null
     private val binding get() = _binding!!
@@ -34,13 +33,11 @@ class ContactsFragment : Fragment() {
 
     private val contactsViewModel: ContactsViewModel by viewModel()
 
-    private var message: String? = null
-
     private val onItemClickListener by lazy {
         object : ContactsAdapter.OnItemClickListener {
             override fun onItemClick(contact: Contact) {
                 contact.phoneNumber?.let {
-                    requireContext().sendSms(it, message ?: "")
+                    requireContext().sendSms(it, args.message ?: "")
                 }
             }
         }
@@ -48,7 +45,6 @@ class ContactsFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let { message = it.getString(MESSAGE_ARG) }
         contactsViewModel.fetchContacts(requireContext())
     }
 

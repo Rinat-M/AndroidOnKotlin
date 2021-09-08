@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.bumptech.glide.Glide
 import com.rino.moviedb.BuildConfig
@@ -16,21 +17,19 @@ import com.rino.moviedb.databinding.ProgressBarAndErrorMsgBinding
 import com.rino.moviedb.entities.ScreenState
 import com.rino.moviedb.remote.entites.PersonDTO
 import com.rino.moviedb.ui.details.MovieDetailsFragment
-import com.rino.moviedb.ui.map.MapFragment
+import com.rino.moviedb.ui.map.MapFragmentArgs
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PersonFragment : Fragment() {
 
     companion object {
-        const val PERSON_ID_ARG = "PERSON_ID_ARG"
-
         fun newInstance(personId: Long) =
             MovieDetailsFragment().apply {
-                arguments = Bundle().apply {
-                    putLong(PERSON_ID_ARG, personId)
-                }
+                arguments = PersonFragmentArgs(personId).toBundle()
             }
     }
+
+    private val args: PersonFragmentArgs by navArgs()
 
     private var _binding: FragmentPersonBinding? = null
     private val binding get() = _binding!!
@@ -48,14 +47,10 @@ class PersonFragment : Fragment() {
 
     private val personViewModel: PersonViewModel by viewModel()
 
-    private var personId: Long = 0
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        arguments?.let { personId = it.getLong(PERSON_ID_ARG) }
-
-        personViewModel.fetchData(personId)
+        personViewModel.fetchData(args.personId)
     }
 
     override fun onCreateView(
@@ -101,9 +96,7 @@ class PersonFragment : Fragment() {
                     with(personPlaceOfBirth) {
                         text = person.placeOfBirth
                         setOnClickListener {
-                            val bundle = Bundle().apply {
-                                putString(MapFragment.ADDRESS_TAG, person.placeOfBirth)
-                            }
+                            val bundle = MapFragmentArgs(person.placeOfBirth).toBundle()
                             findNavController().navigate(
                                 R.id.action_navigation_person_to_map,
                                 bundle

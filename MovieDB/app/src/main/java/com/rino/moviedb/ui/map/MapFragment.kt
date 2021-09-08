@@ -12,6 +12,7 @@ import androidx.appcompat.widget.SearchView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.navArgs
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -32,20 +33,20 @@ class MapFragment : Fragment() {
 
     companion object {
         private const val TAG = "MapFragment"
-        const val ADDRESS_TAG = "ADDRESS_TAG"
         private const val GEOFENCE_RADIUS = 200.0f
 
         fun newInstance(address: String) = MapFragment().apply {
-            arguments?.putString(ADDRESS_TAG, address)
+            arguments = MapFragmentArgs(address).toBundle()
         }
     }
+
+    private val args: MapFragmentArgs by navArgs()
 
     private var _binding: FragmentMapBinding? = null
     private val binding get() = _binding!!
 
     private val mapViewModel: MapViewModel by viewModel()
 
-    private var defaultAddress: String? = null
     private lateinit var map: GoogleMap
 
     private val permissionResult =
@@ -78,7 +79,7 @@ class MapFragment : Fragment() {
             permissionResult.launch(Manifest.permission.ACCESS_FINE_LOCATION)
         }
 
-        defaultAddress?.let { mapViewModel.searchByLocationName(it) }
+        args.address?.let { mapViewModel.searchByLocationName(it) }
 
         map.setOnMapLongClickListener { latLng ->
             if (Build.VERSION.SDK_INT >= 29) {
@@ -112,8 +113,6 @@ class MapFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
-
-        arguments?.let { defaultAddress = it.getString(ADDRESS_TAG) }
     }
 
     override fun onCreateView(
@@ -146,7 +145,7 @@ class MapFragment : Fragment() {
 
         binding.mapSearchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                mapViewModel.searchByLocationName(query ?: defaultAddress)
+                mapViewModel.searchByLocationName(query ?: args.address)
                 context?.hideKeyboard(binding.root)
                 return true
             }
