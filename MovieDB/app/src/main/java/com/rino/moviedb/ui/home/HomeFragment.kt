@@ -13,7 +13,7 @@ import com.rino.moviedb.entities.AppState
 import com.rino.moviedb.entities.CategoryWithMovies
 import com.rino.moviedb.entities.Movie
 import com.rino.moviedb.entities.MoviesCategory
-import com.rino.moviedb.ui.details.MovieDetailsFragment
+import com.rino.moviedb.ui.details.MovieDetailsFragmentArgs
 import com.rino.moviedb.ui.home.adapters.CategoryWithMoviesAdapter
 import com.rino.moviedb.ui.home.adapters.MoviesAdapter
 import com.rino.moviedb.utils.showSnackBar
@@ -38,9 +38,7 @@ class HomeFragment : Fragment() {
                 homeViewModel.viewModelScope.launch {
                     homeViewModel.saveToHistoryAsync(movie).await()
 
-                    val bundle = Bundle().apply {
-                        putLong(MovieDetailsFragment.MOVIE_ID_ARG, movie.id)
-                    }
+                    val bundle = MovieDetailsFragmentArgs(movie.id).toBundle()
 
                     findNavController().navigate(
                         R.id.action_navigation_home_to_movie_details,

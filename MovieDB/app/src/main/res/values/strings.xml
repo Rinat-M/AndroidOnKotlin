@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MovieDB</string>
+    <string name="app_name">MoviesDb</string>
     <string name="title_home">Home</string>
     <string name="title_favorites">Favorites</string>
     <string name="title_ratings">Ratings</string>
@@ -35,6 +35,12 @@
     <string name="terrain">Terrain</string>
     <string name="traffic">Traffic</string>
     <string name="need_permissions_to_location">You must grant permission to your location</string>
-    <string name="geofence_receiver">Geofence receiver</string>
     <string name="geofence_transition_invalid_type">Geofence transition invalid type %s</string>
+    <string name="geofence_channel_id">geofence_channel</string>
+    <string name="geofence_channel_name">Geofence receiver</string>
+    <string name="geofence_channel_description">This channel should be notified about geofence change.</string>
+    <string name="favorite_movies_channel_id">favorite_movies_channel</string>
+    <string name="favorite_movies_channel_name">Favorite movies</string>
+    <string name="favorite_movies_channel_description">This channel should be notified about favorite movies.</string>
+    <string name="id">ID:</string>
 </resources>

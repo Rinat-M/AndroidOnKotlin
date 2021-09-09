@@ -12,7 +12,7 @@ import com.rino.moviedb.database.entites.HistoryWithMovie
 import com.rino.moviedb.databinding.FragmentHistoryBinding
 import com.rino.moviedb.databinding.ProgressBarAndErrorMsgBinding
 import com.rino.moviedb.entities.ScreenState
-import com.rino.moviedb.ui.details.MovieDetailsFragment
+import com.rino.moviedb.ui.details.MovieDetailsFragmentArgs
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class HistoryFragment : Fragment() {
@@ -68,9 +68,7 @@ class HistoryFragment : Fragment() {
 
                     val onItemClickListener = object : HistoryAdapter.OnItemClickListener {
                         override fun onItemClick(movieId: Long) {
-                            val bundle = Bundle().apply {
-                                putLong(MovieDetailsFragment.MOVIE_ID_ARG, movieId)
-                            }
+                            val bundle = MovieDetailsFragmentArgs(movieId).toBundle()
 
                             findNavController().navigate(
                                 R.id.action_navigation_history_to_movie_details,

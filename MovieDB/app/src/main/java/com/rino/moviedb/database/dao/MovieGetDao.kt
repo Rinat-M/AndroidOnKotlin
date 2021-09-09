@@ -41,4 +41,15 @@ interface MovieGetDao {
     )
     fun getFavoritesMoviesFlow(): Flow<List<Movie>>
 
+    @Query(
+        """
+        SELECT Movie.* 
+        FROM Movie as Movie
+        INNER JOIN Favorite as Favorite 
+            ON Movie.id = Favorite.movieId
+        WHERE Movie.id = :id
+        LIMIT 1;
+        """
+    )
+    fun getFavoriteMovieById(id: Long): Movie?
 }

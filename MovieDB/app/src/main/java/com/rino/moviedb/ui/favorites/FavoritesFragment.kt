@@ -12,7 +12,7 @@ import com.rino.moviedb.databinding.FragmentFavoritesBinding
 import com.rino.moviedb.databinding.ProgressBarAndErrorMsgBinding
 import com.rino.moviedb.entities.Movie
 import com.rino.moviedb.entities.ScreenState
-import com.rino.moviedb.ui.details.MovieDetailsFragment
+import com.rino.moviedb.ui.details.MovieDetailsFragmentArgs
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class FavoritesFragment : Fragment() {
@@ -30,9 +30,7 @@ class FavoritesFragment : Fragment() {
     private val onItemClickListener by lazy {
         object : FavoritesAdapter.OnItemClickListener {
             override fun onItemClick(movieId: Long) {
-                val bundle = Bundle().apply {
-                    putLong(MovieDetailsFragment.MOVIE_ID_ARG, movieId)
-                }
+                val bundle = MovieDetailsFragmentArgs(movieId).toBundle()
 
                 findNavController().navigate(
                     R.id.action_navigation_favorite_to_movie_details,

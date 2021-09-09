@@ -61,4 +61,7 @@ class MoviesRepositoryImpl(
 
     override fun getPerson(personId: Long): Result<PersonDTO?> = dataSource.getPerson(personId)
 
+    override fun getFavoriteMovieById(movieId: Long): Movie? =
+        movieGetDao.getFavoriteMovieById(movieId)?.coreModel
+
 }

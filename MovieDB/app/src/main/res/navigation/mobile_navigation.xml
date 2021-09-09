@@ -48,6 +48,9 @@
         <action
             android:id="@+id/action_navigation_details_to_person"
             app:destination="@id/navigation_person" />
+        <argument
+            android:name="movieId"
+            app:argType="long" />
     </fragment>
 
     <fragment
@@ -70,7 +73,12 @@
         android:id="@+id/navigation_contacts"
         android:name="com.rino.moviedb.ui.contacts.ContactsFragment"
         android:label="Share with contact"
-        tools:layout="@layout/fragment_contacts" />
+        tools:layout="@layout/fragment_contacts">
+        <argument
+            android:name="message"
+            app:argType="string"
+            app:nullable="true" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_person"
@@ -80,12 +88,20 @@
         <action
             android:id="@+id/action_navigation_person_to_map"
             app:destination="@id/navigation_map" />
+        <argument
+            android:name="personId"
+            app:argType="long" />
     </fragment>
 
     <fragment
         android:id="@+id/navigation_map"
         android:name="com.rino.moviedb.ui.map.MapFragment"
         android:label="Map"
-        tools:layout="@layout/fragment_map" />
+        tools:layout="@layout/fragment_map">
+        <argument
+            android:name="address"
+            app:argType="string"
+            app:nullable="true" />
+    </fragment>
 
 </navigation>

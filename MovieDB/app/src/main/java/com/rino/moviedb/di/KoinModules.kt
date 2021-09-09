@@ -3,6 +3,7 @@ package com.rino.moviedb.di
 import com.rino.moviedb.database.DatabaseModule
 import com.rino.moviedb.datasources.DataSource
 import com.rino.moviedb.datasources.RemoteDataSourceImpl
+import com.rino.moviedb.helpers.NotificationHelper
 import com.rino.moviedb.repositories.MoviesRepository
 import com.rino.moviedb.repositories.MoviesRepositoryImpl
 import com.rino.moviedb.ui.contacts.ContactsViewModel
@@ -34,6 +35,9 @@ val appModule = module {
     single { DatabaseModule.getAppDatabase(get()) }
     single { DatabaseModule.getMovieGetDao(get()) }
     single { DatabaseModule.getMovieSetDao(get()) }
+
+    // Notification helper
+    single { NotificationHelper(get()) }
 
     // view models
     viewModel { HomeViewModel(get(), get()) }

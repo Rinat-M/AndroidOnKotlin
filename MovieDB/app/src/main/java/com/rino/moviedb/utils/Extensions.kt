@@ -5,13 +5,16 @@ import android.content.Intent
 import android.graphics.PorterDuff
 import android.net.Uri
 import android.provider.Settings
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.content.ContextCompat
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.messaging.FirebaseMessaging
 import com.rino.moviedb.R
 import java.io.BufferedReader
 import java.io.InputStreamReader
@@ -120,7 +123,7 @@ fun Context.sendSms(phoneNumber: String, msg: String) {
     val sendToIntent = Intent(Intent.ACTION_SENDTO).apply {
         addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         type = "text/plain"
-        putExtra("sms_body", msg);
+        putExtra("sms_body", msg)
         data = Uri.parse("smsto:$phoneNumber")
     }
 
@@ -141,3 +144,20 @@ fun Context.hideKeyboard(view: View) {
 fun Float.roundTo(n: Int): Float = "%.${n}f".format(Locale.ENGLISH, this).toFloat()
 
 fun Double.roundTo(n: Int): Double = "%.${n}f".format(Locale.ENGLISH, this).toDouble()
+
+fun Context.getFirebaseRegistrationToken(infoTag: String) {
+    FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+        if (!task.isSuccessful) {
+            Log.w(infoTag, "Fetching FCM registration token failed", task.exception)
+            return@OnCompleteListener
+        }
+
+        // Get new FCM registration token
+        val token = task.result
+
+        // Log and toast
+        val msg = "Firebase message token: $token"
+        Log.d(infoTag, msg)
+        showToast(msg)
+    })
+}
