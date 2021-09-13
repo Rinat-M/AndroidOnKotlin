@@ -14,8 +14,8 @@ android {
         applicationId "com.rino.moviedb"
         minSdk 23
         targetSdk 30
-        versionCode 43
-        versionName "1.8.0"
+        versionCode 44
+        versionName "1.8.1"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
@@ -23,6 +23,18 @@ android {
         properties.load(project.rootProject.file("apikey.properties").newDataInputStream())
         def googleApiKey = properties.getProperty("google_api_key", "")
         manifestPlaceholders = [GOOGLE_GEO_API_KEY: googleApiKey]
+    }
+
+    signingConfigs {
+        release {
+            Properties properties = new Properties()
+            properties.load(project.rootProject.file("keystore.properties").newDataInputStream())
+
+            storeFile project.rootProject.file("keystore.jks")
+            keyAlias properties.getProperty("keyAlias", "")
+            storePassword properties.getProperty("storePassword", "")
+            keyPassword properties.getProperty("keyPassword", "")
+        }
     }
 
     buildTypes.each {
@@ -42,8 +54,25 @@ android {
 
     buildTypes {
         release {
+            signingConfig signingConfigs.release
+            versionNameSuffix "-release"
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            versionNameSuffix "-debug"
+        }
+    }
+
+    flavorDimensions 'version'
+
+    productFlavors {
+        full {
+            dimension 'version'
+        }
+        experiment {
+            dimension 'version'
+            versionNameSuffix '-experiment'
         }
     }
 
